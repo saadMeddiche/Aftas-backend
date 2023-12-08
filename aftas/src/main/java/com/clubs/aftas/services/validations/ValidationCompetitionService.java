@@ -1,5 +1,6 @@
 package com.clubs.aftas.services.validations;
 
+import com.clubs.aftas.dtos.competition.requests.CompetitionAddRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.handlingExceptions.costumExceptions.AlreadyExistsException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DateValidationException;
@@ -16,7 +17,7 @@ public class ValidationCompetitionService {
 
     private final CompetitionRepository competitionRepository;
 
-    public void validateCompetitionWhenCreating(Competition competition) {
+    public void validateCompetitionWhenCreating(CompetitionAddRequest competition) {
 
         LocalDate competitionDate = competition.getDate();
 
