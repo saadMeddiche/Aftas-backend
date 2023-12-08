@@ -13,7 +13,11 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ranking extends BaseEntity {
+public class Ranking {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Positive(message = "Rank must be positive")
     @NotNull(message = "Rank cannot be null")

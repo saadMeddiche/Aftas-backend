@@ -1,7 +1,6 @@
 package com.clubs.aftas.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
@@ -12,7 +11,11 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hunting extends BaseEntity {
+public class Hunting {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @PositiveOrZero(message = "Number of fish must be positive")
     @NotNull(message = "Number of fish cannot be null")
