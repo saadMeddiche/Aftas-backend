@@ -3,18 +3,9 @@ package com.clubs.aftas.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Getter
-@Setter
-@ToString
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Fish {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Entity
+public class Fish extends BaseEntity {
 
     @Column(unique = true)
     private String name;

@@ -9,17 +9,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@ToString
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Competition {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Competition extends BaseEntity {
 
     @Column(unique = true)
     private String code;
