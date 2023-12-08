@@ -1,6 +1,7 @@
 package com.clubs.aftas.services;
 
 
+import com.clubs.aftas.dtos.competition.requests.CompetitionAddRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
@@ -17,7 +18,7 @@ public interface CompetitionService {
 
     public List<Ranking> getRankings(Competition competition);
 
-    public Competition createCompetition(Competition competition);
+    public Competition createCompetition(CompetitionAddRequest competitionAddRequest);
 
     public Competition updateCompetition(Competition competition);
 
