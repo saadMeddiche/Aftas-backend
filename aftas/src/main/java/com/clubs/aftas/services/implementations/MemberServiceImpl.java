@@ -24,14 +24,16 @@ public class MemberServiceImpl implements MemberService {
     private final ValidationMemberService validationMemberService;
     private final MemberRepository memberRepository;
 
+
     @Override
     public List<Member> getAllMembers() {
-        return null;
+        return memberRepository.findAll();
     }
 
     @Override
     public Page<Member> getAllMembersWithPagination(Pageable pageable) {
-        return null;
+
+        return memberRepository.findAll(pageable);
     }
 
     @Override
