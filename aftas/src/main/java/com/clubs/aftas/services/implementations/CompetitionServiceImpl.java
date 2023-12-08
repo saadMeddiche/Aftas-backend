@@ -11,6 +11,8 @@ import com.clubs.aftas.services.validations.ValidationCompetitionService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +27,12 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public List<Competition> getAllCompetitions() {
-        return null;
+        return competitionRepository.findAll();
+    }
+
+    @Override
+    public Page<Competition> getAllCompetitionsWithPagination(Pageable pageable){
+       return competitionRepository.findAll(pageable);
     }
 
     @Override
