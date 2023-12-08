@@ -2,12 +2,15 @@ package com.clubs.aftas.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
+import lombok.*;
 
 
 import java.time.LocalDate;
 import java.util.List;
-
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member extends BaseEntity {
 
     private String name;

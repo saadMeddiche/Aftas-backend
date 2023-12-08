@@ -1,9 +1,12 @@
 package com.clubs.aftas.entities;
 
 import jakarta.persistence.*;
-
+import lombok.*;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Level extends BaseEntity {
 
     @Column(unique = true)

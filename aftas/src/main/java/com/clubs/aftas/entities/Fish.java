@@ -3,8 +3,10 @@ package com.clubs.aftas.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Fish extends BaseEntity {
 
     @Column(unique = true)
