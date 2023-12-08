@@ -35,7 +35,7 @@ public class ValidationCompetitionService {
         Optional<Competition> existingCompetition = competitionRepository.findByDate(competitionDate);
 
         if (existingCompetition.isEmpty()){
-            throw new AlreadyExistsException("Competition with the same date already exists");
+            throw new AlreadyExistsException("The Competition :"+ existingCompetition.get().getCode()+"already have that date");
         }
 
     }
