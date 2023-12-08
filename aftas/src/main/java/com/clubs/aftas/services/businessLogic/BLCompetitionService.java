@@ -1,7 +1,10 @@
 package com.clubs.aftas.services.businessLogic;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 
+@Component
 public class BLCompetitionService {
 
     public String createCodeForCompetition(String location , LocalDate date) {
