@@ -5,6 +5,7 @@ import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +32,9 @@ public class Member {
 
     @Column(unique = true)
     private String identityNumber;
+
+    @OneToMany(mappedBy = "member")
+    private List<Ranking> rankings;
 
     public enum IdentityDocumentType {
         CIN,

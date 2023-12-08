@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,4 +36,8 @@ public class Competition {
     private String location;
 
     private Double amount;
+
+    @OneToMany(mappedBy = "competition")
+    private List<Ranking> rankings;
+
 }
