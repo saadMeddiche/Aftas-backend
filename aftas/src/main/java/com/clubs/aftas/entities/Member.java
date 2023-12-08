@@ -42,14 +42,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private IdentityDocumentType identityDocument;
 
-    @Column(unique = true)
     @NotNull(message = "Identity number cannot be null")
     @NotBlank(message = "Identity number cannot be blank")
     private String identityNumber;
 
     @OneToMany(mappedBy = "member")
-    @NotNull(message = "Rankings cannot be null")
-    @NotEmpty(message = "Rankings cannot be empty")
+    @Column(nullable = true)
     private List<Ranking> rankings;
 
     public enum IdentityDocumentType {
@@ -57,4 +55,6 @@ public class Member {
         PASSPORT,
         CARTE_RESIDENCE
     }
+
+
 }
