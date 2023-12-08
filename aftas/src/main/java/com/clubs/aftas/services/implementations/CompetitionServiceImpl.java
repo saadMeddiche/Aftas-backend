@@ -46,28 +46,35 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Override
     public Competition createCompetition(@Valid CompetitionAddRequest competitionAddRequest) {
 
+        // Validate The Competition
+        validationCompetitionService.validateCompetitionWhenCreating(competitionAddRequest); // If Some thing went wrong throw an exception
+
         // Create The Code Of Competition
         String code = blCompetitionService.createCodeForCompetition(competitionAddRequest.getLocation() , competitionAddRequest.getDate());
 
         // Create The Competition
-        Competition competition = new Competition();
-        competition.setCode(code);
-        competition.setDate(competitionAddRequest.getDate());
-        competition.setStartTime(competitionAddRequest.getStartTime());
-        competition.setEndTime(competitionAddRequest.getEndTime());
-        competition.setNumberOfParticipants(competitionAddRequest.getNumberOfParticipants());
-        competition.setLocation(competitionAddRequest.getLocation());
-        competition.setAmount(competitionAddRequest.getAmount());
+        Competition competition = buildCompetitionObject(competitionAddRequest, code);
 
         // Save the competition to the database
         return competitionRepository.save(competition);
-
-
 
     }
 
     @Override
     public Competition updateCompetition(Competition competition) {
         return null;
+    }
+
+    private Competition buildCompetitionObject(CompetitionAddRequest competitionAddRequest, String code) {
+        return Competition.builder()
+                .code(code)
+                .date(competitionAddRequest.getDate())
+                .startTime(competitionAddRequest.getStartTime())
+                .endTime(competitionAddRequest.getEndTime())
+                .numberOfParticipants(competitionAddRequest.getNumberOfParticipants())
+                .location(competitionAddRequest.getLocation())
+                .amount(competitionAddRequest.getAmount())
+                .rankings(null)
+                .build();
     }
 }
