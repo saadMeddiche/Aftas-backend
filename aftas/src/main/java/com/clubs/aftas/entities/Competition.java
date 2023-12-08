@@ -3,6 +3,7 @@ package com.clubs.aftas.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
@@ -34,7 +35,7 @@ public class Competition extends BaseEntity {
     private LocalTime endTime;
 
     @NotNull(message = "Number of participants cannot be null")
-    @PositiveOrZero(message = "Number of participants must be positive")
+    @Positive(message = "Number of participants must be positive")
     private Integer numberOfParticipants;
 
     @NotNull(message = "Location cannot be null")
