@@ -2,16 +2,24 @@ package com.clubs.aftas.dtos.competition.requests;
 
 import com.clubs.aftas.entities.Ranking;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompetitionAddRequest {
 
     @Column(unique = true)
