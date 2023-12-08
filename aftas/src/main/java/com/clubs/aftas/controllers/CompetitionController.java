@@ -1,6 +1,6 @@
 package com.clubs.aftas.controllers;
 
-import com.clubs.aftas.dtos.competition.requests.CompetitionAddRequest;
+import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.services.CompetitionService;
 import jakarta.validation.Valid;
@@ -31,8 +31,14 @@ public class CompetitionController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createCompetition(@Valid @RequestBody CompetitionAddRequest competitionAddRequest) {
-        Competition addedCompetition = competitionService.createCompetition(competitionAddRequest);
+    public ResponseEntity<?> createCompetition(@Valid @RequestBody CompetitionRequest competitionRequest) {
+        Competition addedCompetition = competitionService.createCompetition(competitionRequest);
         return new ResponseEntity<>(addedCompetition, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{competitionId}")
+    public ResponseEntity<?> updateCompetition(@PathVariable Long competitionId,@Valid @RequestBody CompetitionRequest competitionRequest) {
+        Competition addedCompetition = competitionService.updateCompetition(competitionRequest, competitionId);
+        return new ResponseEntity<>(addedCompetition, HttpStatus.OK);
     }
 }

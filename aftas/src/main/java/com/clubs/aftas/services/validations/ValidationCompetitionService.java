@@ -1,6 +1,6 @@
 package com.clubs.aftas.services.validations;
 
-import com.clubs.aftas.dtos.competition.requests.CompetitionAddRequest;
+import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.handlingExceptions.costumExceptions.AlreadyExistsException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DateValidationException;
@@ -18,7 +18,7 @@ public class ValidationCompetitionService {
 
     private final CompetitionRepository competitionRepository;
 
-    public void validateCompetitionWhenCreating(CompetitionAddRequest competition) {
+    public void validateCompetitionWhenCreating(CompetitionRequest competition) {
 
         LocalDate competitionDate = competition.getDate();
 
@@ -31,6 +31,31 @@ public class ValidationCompetitionService {
         // Check If There is already a competition with the same date
         throwExceptionIfCompetitionWithSameDateAlreadyExists(competitionDate);
 
+    }
+
+    public void validateCompetitionWhenUpdating(CompetitionRequest competition , Long competitionId) {
+
+        LocalDate competitionDate = competition.getDate();
+
+        // Check If The Date of the Competition Is not high then the current date by Three Days
+        throwExceptionIfCompetitionDateIsNotMoreThanThreeDaysBeforeCurrentDate(competitionDate);
+
+        // Check If The start time is after the end time
+        throwExceptionIfStartTimeIsAfterEndTime(competition.getStartTime(), competition.getEndTime());
+
+        // Check If There is already a competition with the same date but with different id
+        throwExceptionIfCompetitionWithSameDateAlreadyExistsButWithDifferentId(competition , competitionId);
+
+    }
+
+    // Throw  exception If There is already a competition with the same date but with different id
+    public void throwExceptionIfCompetitionWithSameDateAlreadyExistsButWithDifferentId(CompetitionRequest competition , Long competitionId) {
+
+        Optional<Competition> existingCompetition = competitionRepository.findByDate(competition.getDate());
+
+        if (existingCompetition.isPresent() && !existingCompetition.get().getId().equals(competitionId)) {
+            throw new AlreadyExistsException("The Competition : '"+ existingCompetition.get().getCode()+"' already have that date");
+        }
     }
 
 

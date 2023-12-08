@@ -1,15 +1,11 @@
 package com.clubs.aftas.dtos.competition.requests;
 
-import com.clubs.aftas.entities.Ranking;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 
 @Getter
@@ -17,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompetitionAddRequest {
+public class CompetitionRequest {
 
     @Column(unique = true)
     @NotNull(message = "Name cannot be null")

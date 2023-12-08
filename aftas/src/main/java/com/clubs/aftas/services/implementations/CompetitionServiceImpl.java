@@ -1,6 +1,6 @@
 package com.clubs.aftas.services.implementations;
 
-import com.clubs.aftas.dtos.competition.requests.CompetitionAddRequest;
+import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
@@ -10,7 +10,6 @@ import com.clubs.aftas.services.businessLogic.BLCompetitionService;
 import com.clubs.aftas.services.validations.ValidationCompetitionService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -51,16 +50,13 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public Competition createCompetition(@Valid CompetitionAddRequest competitionAddRequest) {
+    public Competition createCompetition(@Valid CompetitionRequest competitionRequest) {
 
         // Validate The Competition
-        validationCompetitionService.validateCompetitionWhenCreating(competitionAddRequest); // If Some thing went wrong throw an exception
-
-        // Create The Code Of Competition
-        String code = blCompetitionService.createCodeForCompetition(competitionAddRequest.getLocation() , competitionAddRequest.getDate());
+        validationCompetitionService.validateCompetitionWhenCreating(competitionRequest); // If Some thing went wrong throw an exception
 
         // Create The Competition
-        Competition competition = buildCompetitionObject(competitionAddRequest, code);
+        Competition competition = buildCompetition(competitionRequest , null);
 
         // Save the competition to the database
         return competitionRepository.save(competition);
@@ -68,19 +64,37 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public Competition updateCompetition(Competition competition) {
-        return null;
+    public Competition updateCompetition(@Valid CompetitionRequest competitionRequest, Long competitionId) {
+
+        // Validate The Competition
+        validationCompetitionService.validateCompetitionWhenUpdating(competitionRequest, competitionId); // If Some thing went wrong throw an exception
+
+        // Create The Competition
+        Competition competition = buildCompetition(competitionRequest , competitionId);
+
+        // Save the competition to the database
+        return competitionRepository.save(competition);
     }
 
-    private Competition buildCompetitionObject(CompetitionAddRequest competitionAddRequest, String code) {
+    private Competition buildCompetition( CompetitionRequest competitionRequest , Long competitionId) {
+
+        // Create The Code Of Competition
+        String code = blCompetitionService.createCodeForCompetition(competitionRequest.getLocation() , competitionRequest.getDate());
+
+        // Create The Competition
+        return buildCompetitionObject(competitionRequest, code , competitionId);
+    }
+
+    private Competition buildCompetitionObject(CompetitionRequest competitionRequest, String code , Long competitionId) {
         return Competition.builder()
+                .id(competitionId)
                 .code(code)
-                .date(competitionAddRequest.getDate())
-                .startTime(competitionAddRequest.getStartTime())
-                .endTime(competitionAddRequest.getEndTime())
-                .numberOfParticipants(competitionAddRequest.getNumberOfParticipants())
-                .location(competitionAddRequest.getLocation())
-                .amount(competitionAddRequest.getAmount())
+                .date(competitionRequest.getDate())
+                .startTime(competitionRequest.getStartTime())
+                .endTime(competitionRequest.getEndTime())
+                .numberOfParticipants(competitionRequest.getNumberOfParticipants())
+                .location(competitionRequest.getLocation())
+                .amount(competitionRequest.getAmount())
                 .rankings(null)
                 .build();
     }
