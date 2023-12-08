@@ -1,28 +1,18 @@
-package com.clubs.aftas.entities;
+package com.clubs.aftas.dtos.competition.requests;
 
-import jakarta.persistence.*;
+import com.clubs.aftas.entities.Ranking;
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-
-@Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Competition extends BaseEntity {
-
-    @Column(unique = true)
-    @NotNull(message = "Code cannot be null")
-    @NotBlank(message = "Code cannot be blank")
-    private String code;
+public class CompetitionAddRequest {
 
     @Column(unique = true)
     @NotNull(message = "Name cannot be null")
@@ -45,9 +35,5 @@ public class Competition extends BaseEntity {
     @NotNull(message = "Amount cannot be null")
     @PositiveOrZero(message = "Amount must be positive")
     private Double amount;
-
-    @OneToMany(mappedBy = "competition")
-    @Column(nullable = true)
-    private List<Ranking> rankings;
 
 }
