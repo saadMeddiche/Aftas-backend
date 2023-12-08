@@ -9,8 +9,8 @@ public class BLCompetitionService {
 
     public String createCodeForCompetition(String location , LocalDate date) {
 
-        // Get First Three Letter of location
-        String firstThreeLetters = location.substring(0, 3);
+        // Get First Three Letter of location And Make It Lower Case
+        String firstThreeLetters = location.substring(0, 3).toLowerCase();
 
         // Get The Year Of Date
         int year = date.getYear();
