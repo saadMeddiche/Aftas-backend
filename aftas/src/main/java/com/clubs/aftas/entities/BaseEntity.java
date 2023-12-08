@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @MappedSuperclass
-@Getter
-@Setter
-@ToString
 public abstract class BaseEntity {
 
     @Id

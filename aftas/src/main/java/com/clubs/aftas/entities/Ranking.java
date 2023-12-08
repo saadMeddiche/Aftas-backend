@@ -8,6 +8,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
