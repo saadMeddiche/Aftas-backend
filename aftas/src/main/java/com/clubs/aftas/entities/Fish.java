@@ -1,9 +1,19 @@
 package com.clubs.aftas.entities;
 
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Entity
+@Getter
+@Setter
+@ToString
 public class Fish {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
     private String name;
 
     private Double averageWeight;
