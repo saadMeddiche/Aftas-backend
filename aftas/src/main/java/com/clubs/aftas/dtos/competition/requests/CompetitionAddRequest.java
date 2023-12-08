@@ -4,10 +4,7 @@ import com.clubs.aftas.entities.Ranking;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -24,6 +21,7 @@ public class CompetitionAddRequest {
 
     @Column(unique = true)
     @NotNull(message = "Name cannot be null")
+    @Future(message = "Date must be in the future")
     private LocalDate date;
 
     @NotNull(message = "Start time cannot be null")
@@ -43,5 +41,7 @@ public class CompetitionAddRequest {
     @NotNull(message = "Amount cannot be null")
     @PositiveOrZero(message = "Amount must be positive")
     private Double amount;
+
+
 
 }

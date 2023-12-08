@@ -1,10 +1,7 @@
 package com.clubs.aftas.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -28,6 +25,7 @@ public class Competition extends BaseEntity {
 
     @Column(unique = true)
     @NotNull(message = "Name cannot be null")
+    @Future(message = "Date must be in the future")
     private LocalDate date;
 
     @NotNull(message = "Start time cannot be null")

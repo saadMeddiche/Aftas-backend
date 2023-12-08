@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CompetitionRepository extends JpaRepository<Competition, Long> {
 
-    List<Competition> findAllPagination(Long id , Pageable pageable);
+//    List<Competition> findAllPagination(Long id , Pageable pageable);
 
     Optional<Competition> findByDate(LocalDate competitionDate);
 

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 
 @Component
@@ -21,11 +22,14 @@ public class ValidationCompetitionService {
 
         LocalDate competitionDate = competition.getDate();
 
-        // Check If There is already a competition with the same date
-        throwExceptionIfCompetitionWithSameDateAlreadyExists(competitionDate);
-
         // Check If The Date of the Competition Is not high then the current date by Three Days
         throwExceptionIfCompetitionDateIsNotMoreThanThreeDaysBeforeCurrentDate(competitionDate);
+
+        // Check If The start time is after the end time
+        throwExceptionIfStartTimeIsAfterEndTime(competition.getStartTime(), competition.getEndTime());
+
+        // Check If There is already a competition with the same date
+        throwExceptionIfCompetitionWithSameDateAlreadyExists(competitionDate);
 
     }
 
@@ -35,8 +39,8 @@ public class ValidationCompetitionService {
 
         Optional<Competition> existingCompetition = competitionRepository.findByDate(competitionDate);
 
-        if (existingCompetition.isEmpty()){
-            throw new AlreadyExistsException("The Competition :"+ existingCompetition.get().getCode()+"already have that date");
+        if (existingCompetition.isPresent()){
+            throw new AlreadyExistsException("The Competition : '"+ existingCompetition.get().getCode()+"' already have that date");
         }
 
     }
@@ -48,6 +52,13 @@ public class ValidationCompetitionService {
 
         if (competitionDate.isBefore(currentDatePlusThreeDays)) {
             throw new DateValidationException("Competition date must be at least 3 days before the current date");
+        }
+    }
+
+    // throw exception  If The start time is after the end time
+    public void throwExceptionIfStartTimeIsAfterEndTime(LocalTime startTime, LocalTime endTime) {
+        if (startTime.isAfter(endTime) || startTime.equals(endTime)) {
+            throw new DateValidationException("Start time cannot be after end time Or equivalent");
         }
     }
 }
