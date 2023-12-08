@@ -12,8 +12,8 @@ public class BLCompetitionService {
         // Get First Three Letter of location And Make It Lower Case
         String firstThreeLetters = location.substring(0, 3).toLowerCase();
 
-        // Get The Year Of Date
-        int year = date.getYear();
+        // Get The two Numberss Of Year Of Date
+        int year = date.getYear() % 100;
 
         // Get The Month Of Date
         int month = date.getMonthValue();
