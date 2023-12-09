@@ -2,6 +2,7 @@ package com.clubs.aftas.handlingExceptions;
 
 import com.clubs.aftas.handlingExceptions.costumExceptions.AlreadyExistsException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DateValidationException;
+import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -29,6 +30,12 @@ public class ExceptionHandlerFactory {
         return new ResponseEntity<>(exception.getError() , HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(EmptyException.class)
+    public ResponseEntity<?> handleEmptyException(EmptyException exception) {
+        return new ResponseEntity<>(exception.getError() , HttpStatus.NO_CONTENT);
+    }
+
+    // Yeh I know ,  I also do not like this one
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleDHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
 
