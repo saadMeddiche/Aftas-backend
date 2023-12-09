@@ -5,6 +5,7 @@ import com.clubs.aftas.dtos.member.requests.MemberRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
+import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.repositories.MemberRepository;
 import com.clubs.aftas.services.MemberService;
 import com.clubs.aftas.services.businessLogic.BLMemberService;
@@ -27,13 +28,22 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<Member> getAllMembers() {
-        return memberRepository.findAll();
+        List<Member> members = memberRepository.findAll();
+
+        if(members.isEmpty()) throw new EmptyException("No members has been added yet");
+
+        return members;
     }
 
     @Override
     public Page<Member> getAllMembersWithPagination(Pageable pageable) {
 
-        return memberRepository.findAll(pageable);
+        Page<Member> members = memberRepository.findAll(pageable);
+
+        // Throw an exception if there are no members
+        if(members.isEmpty()) throw new EmptyException("No member has been found");
+
+        return members;
     }
 
     @Override
