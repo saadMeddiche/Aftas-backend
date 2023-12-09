@@ -4,6 +4,7 @@ import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
+import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.repositories.CompetitionRepository;
 import com.clubs.aftas.services.CompetitionService;
 import com.clubs.aftas.services.businessLogic.BLCompetitionService;
@@ -26,12 +27,22 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public List<Competition> getAllCompetitions() {
-        return competitionRepository.findAll();
+
+        List<Competition> competitions = competitionRepository.findAll();
+
+        if(competitions.isEmpty()) throw new EmptyException("No competitions has been added yet");
+
+        return competitions;
     }
 
     @Override
     public Page<Competition> getAllCompetitionsWithPagination(Pageable pageable){
-       return competitionRepository.findAll(pageable);
+
+        Page<Competition> competitions = competitionRepository.findAll(pageable);
+
+        if(competitions.isEmpty()) throw new EmptyException("No competition has been found");
+
+        return competitions;
     }
 
     @Override
