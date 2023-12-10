@@ -2,6 +2,7 @@ package com.clubs.aftas.controllers;
 
 import com.clubs.aftas.dtos.member.requests.MemberRequest;
 import com.clubs.aftas.dtos.member.requests.MemberRequest;
+import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.services.MemberService;
@@ -25,6 +26,11 @@ public class MemberController {
     @GetMapping
     public List<Member> getMembers() {
         return memberService.getAllMembers();
+    }
+
+    @GetMapping("/{memberId}")
+    public Member getMember(@PathVariable Long memberId) {
+        return memberService.getMemberById(memberId);
     }
     @GetMapping("/pagination")
     public Page<Member> getMembersWithPagination(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {

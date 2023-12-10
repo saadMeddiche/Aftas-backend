@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -48,7 +49,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member getMemberById(Long id) {
-        return null;
+        return memberRepository.findById(id).orElseThrow(() -> new EmptyException("No member has been found with id: " + id));
     }
 
     @Override
