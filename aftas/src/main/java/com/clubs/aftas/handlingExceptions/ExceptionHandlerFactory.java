@@ -2,6 +2,7 @@ package com.clubs.aftas.handlingExceptions;
 
 import com.clubs.aftas.handlingExceptions.costumExceptions.AlreadyExistsException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DateValidationException;
+import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,11 @@ public class ExceptionHandlerFactory {
     @ExceptionHandler(EmptyException.class)
     public ResponseEntity<?> handleEmptyException(EmptyException exception) {
         return new ResponseEntity<>(exception.getError() , HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler(DoNotExistException.class)
+    public ResponseEntity<?> handleDoNotExistException(DoNotExistException exception) {
+        return new ResponseEntity<>(exception.getError() , HttpStatus.NOT_FOUND);
     }
 
     // Yeh I know ,  I also do not like this one
