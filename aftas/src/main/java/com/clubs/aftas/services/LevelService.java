@@ -12,6 +12,6 @@ public interface LevelService {
 
         Level addLevel(Level level);
 
-        void initializeLevels();
+        void createDefaultLevels();
 
 }
