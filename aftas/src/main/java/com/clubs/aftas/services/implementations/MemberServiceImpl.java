@@ -59,11 +59,8 @@ public class MemberServiceImpl implements MemberService {
         // Validate The Member
         validationMemberService.validateMemberWhenCreating(memberRequest);
 
-        // Create The Member
-        Member member = buildCompetitionObject(memberRequest , null);
-
         // Save The Member
-        return memberRepository.save(member);
+        return memberRepository.save(buildCompetitionObject(memberRequest , null));
     }
 
     @Override
@@ -72,11 +69,8 @@ public class MemberServiceImpl implements MemberService {
         // Validate The Member
         validationMemberService.validateMemberWhenUpdating(memberRequest , memberId);
 
-        // Create The Member
-        Member member = buildCompetitionObject(memberRequest , memberId);
-
         // Save The Member
-        return memberRepository.save(member);
+        return memberRepository.save( buildCompetitionObject(memberRequest , memberId));
     }
 
     private Member buildCompetitionObject(MemberRequest memberRequest, Long memberId) {

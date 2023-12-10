@@ -58,11 +58,8 @@ public class CompetitionServiceImpl implements CompetitionService {
         // Validate The Competition
         validationCompetitionService.validateCompetitionWhenCreating(competitionRequest); // If Some thing went wrong throw an exception
 
-        // Create The Competition
-        Competition competition = buildCompetition(competitionRequest , null);
-
-        // Save the competition to the database
-        return competitionRepository.save(competition);
+        //Create The Competition and Save the competition to the database
+        return competitionRepository.save(buildCompetition(competitionRequest , null));
 
     }
 
@@ -72,11 +69,8 @@ public class CompetitionServiceImpl implements CompetitionService {
         // Validate The Competition
         validationCompetitionService.validateCompetitionWhenUpdating(competitionRequest, competitionId); // If Some thing went wrong throw an exception
 
-        // Create The Competition
-        Competition competition = buildCompetition(competitionRequest , competitionId);
-
         // Save the competition to the database
-        return competitionRepository.save(competition);
+        return competitionRepository.save(buildCompetition(competitionRequest , competitionId));
     }
 
     private Competition buildCompetition( CompetitionRequest competitionRequest , Long competitionId) {
