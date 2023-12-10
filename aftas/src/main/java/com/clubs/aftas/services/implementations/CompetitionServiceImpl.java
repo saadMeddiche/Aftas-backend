@@ -4,6 +4,7 @@ import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
+import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.repositories.CompetitionRepository;
 import com.clubs.aftas.services.CompetitionService;
@@ -48,7 +49,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public Competition getCompetitionById(Long id) {
-       return competitionRepository.findById(id).orElseThrow(() -> new EmptyException("No competition has been found with id: " + id));
+       return competitionRepository.findById(id).orElseThrow(() -> new DoNotExistException("No competition has been found with id: " + id));
     }
 
     @Override
