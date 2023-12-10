@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "code": 1,
+    "description": "Lowest Difficulty",
+    "points": 100
+  },
+  {
+    "id": 2,
+    "code": 2,
+    "description": "Low Difficulty",
+    "points": 200
+  },
+  {
+    "id": 3,
+    "code": 3,
+    "description": "Moderate Difficulty",
+    "points": 300
+  },
+  {
+    "id": 4,
+    "code": 4,
+    "description": "High Difficulty",
+    "points": 400
+  },
+  {
+    "id": 5,
+    "code": 5,
+    "description": "Very High Difficulty",
+    "points": 500
+  },
+  {
+    "id": 6,
+    "code": 6,
+    "description": "Extreme Difficulty",
+    "points": 600
+  }
+]
