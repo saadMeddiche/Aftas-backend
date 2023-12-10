@@ -5,6 +5,7 @@ import com.clubs.aftas.dtos.member.requests.MemberRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
+import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.repositories.MemberRepository;
 import com.clubs.aftas.services.MemberService;
@@ -29,11 +30,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<Member> getAllMembers() {
-        List<Member> members = memberRepository.findAll();
-
-        if(members.isEmpty()) throw new EmptyException("No members has been added yet");
-
-        return members;
+        return Optional.of(memberRepository.findAll()).filter(members -> !members.isEmpty()).orElseThrow(() -> new EmptyException("No members have been added yet"));
     }
 
     @Override
@@ -49,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member getMemberById(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new EmptyException("No member has been found with id: " + id));
+        return memberRepository.findById(id).orElseThrow(() -> new DoNotExistException("No member has been found with id: " + id));
     }
 
     @Override
