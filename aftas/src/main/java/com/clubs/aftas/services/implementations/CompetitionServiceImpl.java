@@ -29,22 +29,12 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public List<Competition> getAllCompetitions() {
-
-        List<Competition> competitions = competitionRepository.findAll();
-
-        if(competitions.isEmpty()) throw new EmptyException("No competitions has been added yet");
-
-        return competitions;
+        return Optional.of(competitionRepository.findAll()).filter(competitions -> !competitions.isEmpty()).orElseThrow(() -> new EmptyException("No competitions have been added yet"));
     }
 
     @Override
     public Page<Competition> getAllCompetitionsWithPagination(Pageable pageable){
-
-        Page<Competition> competitions = competitionRepository.findAll(pageable);
-
-        if(competitions.isEmpty()) throw new EmptyException("No competition has been found");
-
-        return competitions;
+        return Optional.of(competitionRepository.findAll(pageable)).filter(competitions -> !competitions.isEmpty()).orElseThrow(() -> new EmptyException("No competition has been found"));
     }
 
     @Override
