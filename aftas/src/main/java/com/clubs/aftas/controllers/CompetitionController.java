@@ -24,6 +24,11 @@ public class CompetitionController {
     public List<Competition> getCompetitions() {
         return competitionService.getAllCompetitions();
     }
+
+    @GetMapping("/{competitionId}")
+    public Competition getCompetition(@PathVariable Long competitionId) {
+        return competitionService.getCompetitionById(competitionId);
+    }
     @GetMapping("/pagination")
     public Page<Competition> getCompetitionsWithPagination(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         PageRequest pageable = PageRequest.of(page, size);
