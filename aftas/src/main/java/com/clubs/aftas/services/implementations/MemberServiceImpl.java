@@ -35,13 +35,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Page<Member> getAllMembersWithPagination(Pageable pageable) {
-
-        Page<Member> members = memberRepository.findAll(pageable);
-
-        // Throw an exception if there are no members
-        if(members.isEmpty()) throw new EmptyException("No member has been found");
-
-        return members;
+        return Optional.of(memberRepository.findAll(pageable)).filter(members -> !members.isEmpty()).orElseThrow(() -> new EmptyException("No member has been found"));
     }
 
     @Override
