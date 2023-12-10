@@ -1,6 +1,7 @@
 package com.clubs.aftas.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
@@ -25,4 +26,7 @@ public class Level {
     @Column(unique = true)
     @Positive(message = "Points must be positive")
     private Integer points;
+
+    @NotNull(message = "Default level cannot be null")
+    private Boolean defaultLevel;
 }
