@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -47,7 +48,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public Competition getCompetitionById(Long id) {
-        return null;
+       return competitionRepository.findById(id).orElseThrow(() -> new EmptyException("No competition has been found with id: " + id));
     }
 
     @Override
