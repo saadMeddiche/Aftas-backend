@@ -26,7 +26,6 @@ public class FishRequest {
     private Double averageWeight;
 
     // Many instances of Fish Class can be associated with one level
-    @ManyToOne
-    @NotNull(message = "Level cannot be null")
-    private Level level;
+    @NotNull(message = "Level id cannot be null")
+    private Long levelId;
 }
