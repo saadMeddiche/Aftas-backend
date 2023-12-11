@@ -18,4 +18,6 @@ public interface RankingService {
 
     public Ranking registerAMemberInACompetition(RankingAddRequest rankingAddRequest);
 
+    public void unregisterAMemberFromACompetition(Long memberId, Long competitionId);
+
 }

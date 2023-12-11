@@ -42,4 +42,10 @@ public class RankingController {
         Ranking addedRanking = rankingService.registerAMemberInACompetition(rankingRequest);
         return new ResponseEntity<>(addedRanking, HttpStatus.CREATED);
     }
+
+    @GetMapping("/unregister/member/{memberId}/competition/{competitionId}")
+    public ResponseEntity<?> unregisterAMemberFromACompetition(@PathVariable Long memberId, @PathVariable Long competitionId) {
+        rankingService.unregisterAMemberFromACompetition(memberId, competitionId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

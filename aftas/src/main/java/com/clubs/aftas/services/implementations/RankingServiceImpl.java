@@ -1,7 +1,10 @@
 package com.clubs.aftas.services.implementations;
 
 import com.clubs.aftas.dtos.ranking.requests.RankingAddRequest;
+import com.clubs.aftas.entities.Competition;
+import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
+import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
 import com.clubs.aftas.repositories.RankingRepository;
 import com.clubs.aftas.services.BaseService;
 import com.clubs.aftas.services.CompetitionService;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RankingServiceImpl extends BaseService<Ranking, Long> implements RankingService {
@@ -56,6 +60,23 @@ public class RankingServiceImpl extends BaseService<Ranking, Long> implements Ra
 
         return rankingRepository.save(ranking);
     }
+
+    @Override
+    public void unregisterAMemberFromACompetition(Long memberId, Long competitionId) {
+
+        Member member = memberService.getMemberById(memberId);
+
+        Competition competition = competitionService.getCompetitionById(competitionId);
+
+       Optional<Ranking> fetchedRanking = rankingRepository.findByMemberAndCompetition(member, competition);
+
+       if(fetchedRanking.isEmpty()) {
+           throw new DoNotExistException("You can not unregister a member that is not in the competition");
+       }
+
+        rankingRepository.deleteById(fetchedRanking.get().getId());
+    }
+
 
     private Ranking buildRankingObject(RankingAddRequest rankingAddRequest , Long rankingId) {
         return Ranking.builder()
