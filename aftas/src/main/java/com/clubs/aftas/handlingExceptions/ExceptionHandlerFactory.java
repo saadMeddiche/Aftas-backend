@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,17 @@ public class ExceptionHandlerFactory {
         }
 
         return new ResponseEntity<>(exception.getMessage() , HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolation(SQLIntegrityConstraintViolationException e) {
+
+
+        if (e.getMessage().contains("foreign key constraint fails") && e.getMessage().contains("FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Cannot delete the level because there is a fish associated with it.");
+        }
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Foreign key error");
     }
 
     // Thanks To Yassine Sahyane
