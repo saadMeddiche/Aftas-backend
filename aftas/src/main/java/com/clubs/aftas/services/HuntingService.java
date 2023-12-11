@@ -17,9 +17,7 @@ public interface HuntingService {
 
     public Hunting getHuntingById(Long id);
 
-    public Hunting createHunting(HuntingRequest huntingRequest);
+    public Hunting addHunting(HuntingRequest huntingRequest);
 
-    public Hunting updateHunting(HuntingRequest hunting , Long huntingId);
-
-    public void deleteHunting(Long id);
+    public void decreaseHunting(HuntingRequest huntingRequest);
 }
