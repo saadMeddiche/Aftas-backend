@@ -20,4 +20,6 @@ public interface FishService {
     public Fish createFish(FishRequest competitionRequest);
 
     public Fish updateFish(FishRequest competition , Long competitionId);
+
+    void createDefaultFishes();
 }
