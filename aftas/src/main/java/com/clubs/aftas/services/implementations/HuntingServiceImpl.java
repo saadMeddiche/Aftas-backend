@@ -1,16 +1,21 @@
 package com.clubs.aftas.services.implementations;
 
 import com.clubs.aftas.dtos.huntings.requests.HuntingRequest;
+import com.clubs.aftas.entities.Competition;
+import com.clubs.aftas.entities.Fish;
 import com.clubs.aftas.entities.Hunting;
+import com.clubs.aftas.entities.Member;
+import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
+import com.clubs.aftas.handlingExceptions.costumExceptions.ValidationException;
 import com.clubs.aftas.repositories.HuntingRepository;
-import com.clubs.aftas.services.BaseService;
-import com.clubs.aftas.services.HuntingService;
-import lombok.AllArgsConstructor;
+import com.clubs.aftas.services.*;
+import com.clubs.aftas.services.validations.ValidationHuntingService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -19,10 +24,21 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
 
     private final HuntingRepository huntingRepository;
 
-    public HuntingServiceImpl(HuntingRepository huntingRepository){
+    private final FishService fishService;
+
+    private final ValidationHuntingService validation;
+
+    private final CompetitionService competitionService;
+
+    private final MemberService memberService;
+
+    public HuntingServiceImpl(HuntingRepository huntingRepository, FishService fishService , ValidationHuntingService validation, CompetitionService competitionService, MemberService memberService) {
         super(huntingRepository , Hunting.class);
         this.huntingRepository = huntingRepository;
-
+        this.validation = validation;
+        this.fishService = fishService;
+        this.competitionService = competitionService;
+        this.memberService = memberService;
     }
     @Override
     public List<Hunting> getAllHuntings() {
@@ -40,34 +56,63 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
     }
 
     @Override
-    public Hunting createHunting(HuntingRequest huntingRequest) {
+    public Hunting addHunting(HuntingRequest huntingRequest){
 
-        Hunting hunting = buildHuntingObject(huntingRequest , null);
+        Competition competition = competitionService.getCompetitionById(huntingRequest.getCompetitionId());
 
-        return huntingRepository.save(hunting);
+        Member member = memberService.getMemberById(huntingRequest.getMemberId());
+
+        Fish huntedFish = fishService.getFishById(huntingRequest.getFishId());
+
+        Optional<Hunting> hunting = huntingRepository.findByCompetitionAndMemberAndFish(competition, member, huntedFish);
+
+        if(hunting.isEmpty()){
+            return huntingRepository.save(buildHuntingObject(1, competition, member, huntedFish, null));
+
+        }
+
+        if(!validation.checkIfHuntedFishIsValid(huntedFish ,huntingRequest.getWeightOfHuntedFish())){
+           throw new ValidationException("weight of hunted fish is not higher then the average weight of the fish");
+        }
+
+        hunting.get().setNumberOfFish(hunting.get().getNumberOfFish() + 1);
+
+        return huntingRepository.save(hunting.get());
+
     }
+
 
     @Override
-    public Hunting updateHunting(HuntingRequest huntingRequest, Long huntingId) {
+    public void decreaseHunting(HuntingRequest huntingRequest) {
+        Competition competition = competitionService.getCompetitionById(huntingRequest.getCompetitionId());
 
-        Hunting hunting = buildHuntingObject(huntingRequest , huntingId);
+        Member member = memberService.getMemberById(huntingRequest.getMemberId());
 
-        return huntingRepository.save(hunting);
+        Fish huntedFish = fishService.getFishById(huntingRequest.getFishId());
+
+        Optional<Hunting> hunting = huntingRepository.findByCompetitionAndMemberAndFish(competition, member, huntedFish);
+
+        if(hunting.isEmpty()){
+            throw new DoNotExistException("Hunting not found");
+        }
+
+        if(hunting.get().getNumberOfFish() == 1){
+            huntingRepository.delete(hunting.get());
+            return;
+        }
+
+        hunting.get().setNumberOfFish(hunting.get().getNumberOfFish() - 1);
+
+        huntingRepository.save(hunting.get());
     }
 
-    @Override
-    public void deleteHunting(Long id) {
-        deleteEntityById(id);
-    }
-
-    public Hunting buildHuntingObject(HuntingRequest huntingRequest , Long huntingId){
+    public Hunting buildHuntingObject(Integer numberOfFish, Competition competition, Member member, Fish huntedFish, Long huntingId){
 
         return Hunting.builder()
                 .id(huntingId)
-                .numberOfFish(huntingRequest.getNumberOfFish())
-                .fish(huntingRequest.getFish())
-                .competition(huntingRequest.getCompetition())
-                .member(huntingRequest.getMember())
+                .numberOfFish(numberOfFish)
+                .competition(competition)
+                .member(member)
                 .build();
 
     }
