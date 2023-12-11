@@ -21,8 +21,6 @@ public interface MemberService {
 
     public List<Competition> getCompetitions(Member member);
 
-    public List<Ranking> getRankings(Member member);
-
     public Member createMember(MemberRequest memberRequest);
 
     public Member updateMember(MemberRequest member , Long memberId);

@@ -48,11 +48,6 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public List<Ranking> getRankings(Competition competition) {
-        return null;
-    }
-
-    @Override
     public Competition createCompetition(@Valid CompetitionRequest competitionRequest) {
 
         // Validate The Competition

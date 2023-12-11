@@ -48,10 +48,6 @@ public class MemberServiceImpl implements MemberService {
         return null;
     }
 
-    @Override
-    public List<Ranking> getRankings(Member member) {
-        return null;
-    }
 
     @Override
     public Member createMember(MemberRequest memberRequest) {

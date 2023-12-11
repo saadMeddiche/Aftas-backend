@@ -20,8 +20,6 @@ public interface CompetitionService {
 
     public List<Member> getParticipants(Competition competition);
 
-    public List<Ranking> getRankings(Competition competition);
-
     public Competition createCompetition(CompetitionRequest competitionRequest);
 
     public Competition updateCompetition(CompetitionRequest competition , Long competitionId);
