@@ -33,18 +33,25 @@ public class ValidationCompetitionService {
 
     }
 
-    public void validateCompetitionWhenUpdating(CompetitionRequest competition , Long competitionId) {
+    public void validateCompetitionWhenUpdating(CompetitionRequest competitionRequest , Long competitionId) {
 
-        LocalDate competitionDate = competition.getDate();
+        LocalDate competitionDate = competitionRequest.getDate();
+
+        Optional<Competition> existingCompetition = competitionRepository.findById(competitionId);
+
+        if(competitionRequest.getNumberOfParticipants() < existingCompetition.get().getRankings().size()) {
+            throw new AlreadyExistsException("You can not update the number of participants to less than the current number of participants");
+
+        }
 
         // Check If The Date of the Competition Is not high then the current date by Three Days
         throwExceptionIfCompetitionDateIsNotMoreThanThreeDaysBeforeCurrentDate(competitionDate);
 
         // Check If The start time is after the end time
-        throwExceptionIfStartTimeIsAfterEndTime(competition.getStartTime(), competition.getEndTime());
+        throwExceptionIfStartTimeIsAfterEndTime(competitionRequest.getStartTime(), competitionRequest.getEndTime());
 
         // Check If There is already a competition with the same date but with different id
-        throwExceptionIfCompetitionWithSameDateAlreadyExistsButWithDifferentId(competition , competitionId);
+        throwExceptionIfCompetitionWithSameDateAlreadyExistsButWithDifferentId(competitionRequest , competitionId);
 
     }
 
