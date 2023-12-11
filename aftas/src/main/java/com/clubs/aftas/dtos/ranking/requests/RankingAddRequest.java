@@ -15,10 +15,10 @@ import lombok.*;
 @AllArgsConstructor
 public class RankingAddRequest {
 
-    @NotNull(message = "Member cannot be null")
-    private Member member;
+    @NotNull(message = "Member id cannot be null")
+    private Long memberId;
 
 
-    @NotNull(message = "Competition cannot be null")
-    private Competition competition;
+    @NotNull(message = "Competition id cannot be null")
+    private Long competitionId;
 }

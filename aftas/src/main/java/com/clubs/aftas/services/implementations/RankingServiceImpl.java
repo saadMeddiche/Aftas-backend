@@ -54,7 +54,7 @@ public class RankingServiceImpl extends BaseService<Ranking, Long> implements Ra
 
         validation.validationRankingWhenCreating(ranking); // If there is a problem it will throw an exception
 
-        return rankingRepository.save(null);
+        return rankingRepository.save(ranking);
     }
 
     private Ranking buildRankingObject(RankingAddRequest rankingAddRequest , Long rankingId) {
@@ -62,8 +62,8 @@ public class RankingServiceImpl extends BaseService<Ranking, Long> implements Ra
                 .id(rankingId)
                 .rank(null)
                 .score(0)
-                .member(memberService.getMemberById(rankingAddRequest.getMember().getId()))
-                .competition(competitionService.getCompetitionById(rankingAddRequest.getCompetition().getId()))
+                .member(memberService.getMemberById(rankingAddRequest.getMemberId()))
+                .competition(competitionService.getCompetitionById(rankingAddRequest.getCompetitionId()))
                 .build();
     }
 }

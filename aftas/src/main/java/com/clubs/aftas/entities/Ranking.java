@@ -1,6 +1,7 @@
 package com.clubs.aftas.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -29,10 +30,12 @@ public class Ranking {
     @ManyToOne
     @JoinColumn(name = "member_id")
     @NotNull(message = "Member cannot be null")
+    @JsonIgnoreProperties("rankings")
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "competition_id")
     @NotNull(message = "Competition cannot be null")
+    @JsonIgnoreProperties("rankings")
     private Competition competition;
 }

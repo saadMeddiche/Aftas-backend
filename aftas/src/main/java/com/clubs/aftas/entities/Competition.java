@@ -1,5 +1,6 @@
 package com.clubs.aftas.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -52,6 +53,7 @@ public class Competition {
 
     @OneToMany(mappedBy = "competition")
     @Column(nullable = true)
+    @JsonIgnoreProperties("competition")
     private List<Ranking> rankings;
 
 }

@@ -1,5 +1,6 @@
 package com.clubs.aftas.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -48,6 +49,7 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     @Column(nullable = true)
+    @JsonIgnoreProperties("member")
     private List<Ranking> rankings;
 
     public enum IdentityDocumentType {
