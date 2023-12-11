@@ -56,7 +56,7 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
     }
 
     @Override
-    public Hunting addHunting(HuntingRequest huntingRequest){
+    public void addHunting(HuntingRequest huntingRequest){
 
         Competition competition = competitionService.getCompetitionById(huntingRequest.getCompetitionId());
 
@@ -67,8 +67,8 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
         Optional<Hunting> hunting = huntingRepository.findByCompetitionAndMemberAndFish(competition, member, huntedFish);
 
         if(hunting.isEmpty()){
-            return huntingRepository.save(buildHuntingObject(1, competition, member, huntedFish, null));
-
+            huntingRepository.save(buildHuntingObject(1, competition, member, huntedFish, null));
+            return;
         }
 
         if(!validation.checkIfHuntedFishIsValid(huntedFish ,huntingRequest.getWeightOfHuntedFish())){
@@ -77,20 +77,15 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
 
         hunting.get().setNumberOfFish(hunting.get().getNumberOfFish() + 1);
 
-        return huntingRepository.save(hunting.get());
+        huntingRepository.save(hunting.get());
 
     }
 
 
     @Override
-    public void decreaseHunting(HuntingRequest huntingRequest) {
-        Competition competition = competitionService.getCompetitionById(huntingRequest.getCompetitionId());
+    public void decreaseHunting(Long huntingId){
 
-        Member member = memberService.getMemberById(huntingRequest.getMemberId());
-
-        Fish huntedFish = fishService.getFishById(huntingRequest.getFishId());
-
-        Optional<Hunting> hunting = huntingRepository.findByCompetitionAndMemberAndFish(competition, member, huntedFish);
+        Optional<Hunting> hunting = huntingRepository.findById(huntingId);
 
         if(hunting.isEmpty()){
             throw new DoNotExistException("Hunting not found");
@@ -111,6 +106,7 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
         return Hunting.builder()
                 .id(huntingId)
                 .numberOfFish(numberOfFish)
+                .fish(huntedFish)
                 .competition(competition)
                 .member(member)
                 .build();
