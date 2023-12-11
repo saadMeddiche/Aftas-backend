@@ -78,6 +78,7 @@ public class LevelServiceImpl extends BaseService<Level, Long> implements LevelS
 
     @Override
     public void deleteLevel(Long id) {
+        validation.validateLevelWhenDeleting(getEntityById(id));
         deleteEntityById(id);
     }
 

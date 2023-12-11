@@ -34,6 +34,14 @@ public class ValidationLevelService {
 
     }
 
+    public void validateLevelWhenDeleting(Level level) {
+
+        // Check if the level is the default level
+        if(level.getDefaultLevel()){
+            throw new ValidationException("The default level cannot be deleted"); // if it is a default level it cannot be deleted
+        }
+    }
+
     public void throwExceptionIfPointsOfTheNewLevelIsLowerThanThePointsOfTheLastLevel(Level level) {
 
         // Get the last level

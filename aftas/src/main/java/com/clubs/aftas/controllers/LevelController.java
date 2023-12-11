@@ -46,4 +46,10 @@ public class LevelController {
         Level updatedLevel = levelService.updateLevel(levelRequest, levelId);
         return new ResponseEntity<>(updatedLevel, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{levelId}")
+    public ResponseEntity<?> deleteLevel(@PathVariable Long levelId) {
+       levelService.deleteLevel(levelId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
