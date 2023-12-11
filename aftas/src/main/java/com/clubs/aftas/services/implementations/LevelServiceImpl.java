@@ -59,8 +59,7 @@ public class LevelServiceImpl extends BaseService<Level, Long> implements LevelS
 
         Level level = buildLevelObject(levelRequest ,code, null);
 
-        // Validate The Level
-        validation.validateLevelWhenCreating(level); // If Some thing went wrong throw an exception
+        validation.validateLevelWhenCreating(level);
 
         return levelRepository.save(level);
     }

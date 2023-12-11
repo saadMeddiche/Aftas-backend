@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -26,6 +28,9 @@ public class Level {
     @Column(unique = true)
     @Positive(message = "Points must be positive")
     private Integer points;
+
+    @OneToMany(mappedBy = "level")
+    private List<Fish> fishes;
 
     @NotNull(message = "Default level cannot be null")
     private Boolean defaultLevel;

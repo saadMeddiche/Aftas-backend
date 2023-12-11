@@ -60,7 +60,6 @@ public class ValidationLevelService {
             throw new ValidationException("The points of the updated level can not be higher then Level: " + afterLevel.get().getCode() +" | " + afterLevel.get().getPoints() +" points");
         }
 
-
     }
 
     private void throwExceptionIfAlreadyThereIsALevelWithTheSameCodeButWithADifferentId(Level level) {
