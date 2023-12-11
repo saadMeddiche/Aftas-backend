@@ -20,6 +20,7 @@ public class BaseService<T, ID> {
 
     private  Class<T> entityClass;
 
+
     public BaseService(JpaRepository<T, ID> repository , Class<T> entityClass){
         this.repository = repository;
         this.entityClass = entityClass;
@@ -37,5 +38,10 @@ public class BaseService<T, ID> {
 
     public T getEntityById(ID id) {
         return repository.findById(id).orElseThrow(() -> new DoNotExistException("No "+ entityClass.getSimpleName()+" has been found with id: " + id));
+    }
+
+    public void deleteEntityById(ID id){
+        Optional.of(repository.findById(id)).filter(Optional::isPresent).orElseThrow(() -> new DoNotExistException("No "+ entityClass.getSimpleName()+" has been found with id: " + id));
+        repository.deleteById(id);
     }
 }

@@ -68,6 +68,11 @@ public class FishServiceImpl extends BaseService<Fish, Long> implements FishServ
         return fishRepository.save(fish);
     }
 
+    @Override
+    public void deleteFish(Long id) {
+        deleteEntityById(id);
+    }
+
     private Fish buildFishObject(FishRequest competitionRequest, Long fishId) {
         return Fish.builder()
                 .id(fishId)

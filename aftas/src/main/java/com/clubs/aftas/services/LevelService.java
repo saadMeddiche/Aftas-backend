@@ -25,4 +25,6 @@ public interface LevelService {
 
         void createDefaultLevels();
 
+        public void deleteLevel(Long id);
+
 }

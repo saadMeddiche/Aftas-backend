@@ -24,4 +24,6 @@ public interface MemberService {
     public Member createMember(MemberRequest memberRequest);
 
     public Member updateMember(MemberRequest member , Long memberId);
+
+    public void deleteMember(Long id);
 }

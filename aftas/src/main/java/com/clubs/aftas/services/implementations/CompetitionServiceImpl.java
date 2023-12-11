@@ -7,6 +7,7 @@ import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.repositories.CompetitionRepository;
+import com.clubs.aftas.services.BaseService;
 import com.clubs.aftas.services.CompetitionService;
 import com.clubs.aftas.services.businessLogic.BLCompetitionService;
 import com.clubs.aftas.services.validations.ValidationCompetitionService;
@@ -20,12 +21,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
-public class CompetitionServiceImpl implements CompetitionService {
+
+public class CompetitionServiceImpl extends BaseService<Competition, Long> implements CompetitionService {
 
     private final BLCompetitionService blCompetitionService;
     private final ValidationCompetitionService validationCompetitionService;
     private final CompetitionRepository competitionRepository;
+
+    public CompetitionServiceImpl(CompetitionRepository competitionRepository, BLCompetitionService blCompetitionService, ValidationCompetitionService validationCompetitionService){
+        super(competitionRepository , Competition.class);
+        this.competitionRepository = competitionRepository;
+        this.blCompetitionService = blCompetitionService;
+        this.validationCompetitionService = validationCompetitionService;
+    }
 
     @Override
     public List<Competition> getAllCompetitions() {
@@ -67,6 +75,12 @@ public class CompetitionServiceImpl implements CompetitionService {
         // Save the competition to the database
         return competitionRepository.save(buildCompetition(competitionRequest , competitionId));
     }
+
+    @Override
+    public void deleteCompetition(Long id) {
+        deleteEntityById(id);
+    }
+
 
     private Competition buildCompetition( CompetitionRequest competitionRequest , Long competitionId) {
 

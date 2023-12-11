@@ -75,6 +75,12 @@ public class LevelServiceImpl extends BaseService<Level, Long> implements LevelS
         return levelRepository.save(level);
     }
 
+
+    @Override
+    public void deleteLevel(Long id) {
+        deleteEntityById(id);
+    }
+
     @Override
     public void createDefaultLevels() {
 

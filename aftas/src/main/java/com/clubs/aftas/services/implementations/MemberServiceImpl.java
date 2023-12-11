@@ -8,6 +8,7 @@ import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.repositories.MemberRepository;
+import com.clubs.aftas.services.BaseService;
 import com.clubs.aftas.services.MemberService;
 import com.clubs.aftas.services.businessLogic.BLMemberService;
 import com.clubs.aftas.services.validations.ValidationMemberService;
@@ -20,27 +21,34 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
-public class MemberServiceImpl implements MemberService {
+
+public class MemberServiceImpl extends BaseService<Member, Long> implements MemberService {
 
     private final BLMemberService blMemberService;
     private final ValidationMemberService validationMemberService;
     private final MemberRepository memberRepository;
 
+    public MemberServiceImpl(MemberRepository memberRepository, BLMemberService blMemberService, ValidationMemberService validationMemberService){
+        super(memberRepository , Member.class);
+        this.memberRepository = memberRepository;
+        this.blMemberService = blMemberService;
+        this.validationMemberService = validationMemberService;
+    }
+
 
     @Override
     public List<Member> getAllMembers() {
-        return Optional.of(memberRepository.findAll()).filter(members -> !members.isEmpty()).orElseThrow(() -> new EmptyException("No members have been added yet"));
+        return getAllEntities();
     }
 
     @Override
     public Page<Member> getAllMembersWithPagination(Pageable pageable) {
-        return Optional.of(memberRepository.findAll(pageable)).filter(members -> !members.isEmpty()).orElseThrow(() -> new EmptyException("No member has been found"));
+        return getAllEntitiesWithPagination(pageable);
     }
 
     @Override
     public Member getMemberById(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new DoNotExistException("No member has been found with id: " + id));
+        return getEntityById(id);
     }
 
     @Override
@@ -67,6 +75,11 @@ public class MemberServiceImpl implements MemberService {
 
         // Save The Member
         return memberRepository.save( buildCompetitionObject(memberRequest , memberId));
+    }
+
+    @Override
+    public void deleteMember(Long id) {
+        deleteEntityById(id);
     }
 
     private Member buildCompetitionObject(MemberRequest memberRequest, Long memberId) {

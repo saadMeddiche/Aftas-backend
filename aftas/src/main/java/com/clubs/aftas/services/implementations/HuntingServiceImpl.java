@@ -47,14 +47,17 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
         return huntingRepository.save(hunting);
     }
 
-
-
     @Override
     public Hunting updateHunting(HuntingRequest huntingRequest, Long huntingId) {
 
         Hunting hunting = buildHuntingObject(huntingRequest , huntingId);
 
         return huntingRepository.save(hunting);
+    }
+
+    @Override
+    public void deleteHunting(Long id) {
+        deleteEntityById(id);
     }
 
     public Hunting buildHuntingObject(HuntingRequest huntingRequest , Long huntingId){

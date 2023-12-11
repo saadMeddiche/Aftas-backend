@@ -24,5 +24,7 @@ public interface CompetitionService {
 
     public Competition updateCompetition(CompetitionRequest competition , Long competitionId);
 
+    public void deleteCompetition(Long id);
+
 
 }

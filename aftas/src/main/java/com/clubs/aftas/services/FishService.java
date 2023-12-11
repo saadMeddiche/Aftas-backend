@@ -21,5 +21,7 @@ public interface FishService {
 
     public Fish updateFish(FishRequest competition , Long competitionId);
 
+    void deleteFish(Long id);
+
     void createDefaultFishes();
 }

@@ -20,4 +20,6 @@ public interface HuntingService {
     public Hunting createHunting(HuntingRequest huntingRequest);
 
     public Hunting updateHunting(HuntingRequest hunting , Long huntingId);
+
+    public void deleteHunting(Long id);
 }
