@@ -6,6 +6,7 @@ import com.clubs.aftas.repositories.FishRepository;
 import com.clubs.aftas.services.BaseService;
 import com.clubs.aftas.services.FishService;
 import com.clubs.aftas.services.LevelService;
+import com.clubs.aftas.services.validations.ValidationFishService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.Page;
@@ -24,10 +25,13 @@ public class FishServiceImpl extends BaseService<Fish, Long> implements FishServ
 
     private final LevelService levelService;
 
-    public FishServiceImpl(FishRepository fishRepository, LevelService levelService) {
+    private final ValidationFishService validation;
+
+    public FishServiceImpl(FishRepository fishRepository, LevelService levelService, ValidationFishService validation) {
         super(fishRepository, Fish.class);
         this.fishRepository = fishRepository;
         this.levelService = levelService;
+        this.validation = validation;
     }
     @Override
     public List<Fish> getAllFishs() {
@@ -46,12 +50,22 @@ public class FishServiceImpl extends BaseService<Fish, Long> implements FishServ
 
     @Override
     public Fish createFish(FishRequest competitionRequest) {
-        return null;
+
+        Fish fish = buildFishObject(competitionRequest, null);
+
+        validation.validateFishWhenCreating(fish);
+
+        return fishRepository.save(fish);
     }
 
     @Override
     public Fish updateFish(FishRequest competition, Long competitionId) {
-        return null;
+
+        Fish fish = buildFishObject(competition, competitionId);
+
+        validation.validateFishWhenUpdating(fish , competitionId);
+
+        return fishRepository.save(fish);
     }
 
     private Fish buildFishObject(FishRequest competitionRequest, Long fishId) {
