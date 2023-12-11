@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-
 public class LevelServiceImpl extends BaseService<Level, Long> implements LevelService {
 
     private final LevelRepository levelRepository;
