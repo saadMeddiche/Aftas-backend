@@ -4,9 +4,10 @@ import com.clubs.aftas.entities.Fish;
 import com.clubs.aftas.handlingExceptions.costumExceptions.AlreadyExistsException;
 import com.clubs.aftas.repositories.FishRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-
+@Component
 @AllArgsConstructor
 public class ValidationFishService {
 

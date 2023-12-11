@@ -1,5 +1,9 @@
 package com.clubs.aftas.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -30,6 +34,7 @@ public class Level {
     private Integer points;
 
     @OneToMany(mappedBy = "level")
+    @JsonIgnoreProperties("level")
     private List<Fish> fishes;
 
     @NotNull(message = "Default level cannot be null")

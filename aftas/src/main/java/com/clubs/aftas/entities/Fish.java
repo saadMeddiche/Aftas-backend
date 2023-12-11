@@ -1,5 +1,9 @@
 package com.clubs.aftas.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,5 +36,6 @@ public class Fish {
     // Many instances of Fish Class can be associated with one level
     @ManyToOne
     @NotNull(message = "Level cannot be null")
+    @JsonIgnoreProperties("fishes")
     private Level level;
 }
