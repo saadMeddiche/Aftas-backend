@@ -69,8 +69,13 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
 
         Optional<Hunting> hunting = huntingRepository.findByCompetitionAndMemberAndFish(competition, member, huntedFish);
 
-        // Check if the user has been registred to the competition
-        if(hunting.isEmpty() && rankingService.checkIfMemberIsRegisteredInCompetition(member, competition)){
+        // Check if the user has been not  registred to the competition
+
+        if(hunting.isEmpty() && !rankingService.checkIfMemberIsRegisteredInCompetition(member, competition)){
+            throw new ValidationException("The member is not registred in the competition: " + competition.getCode());
+        }
+
+        if(hunting.isEmpty() ){
             huntingRepository.save(buildHuntingObject(1, competition, member, huntedFish, null));
             return;
         }
