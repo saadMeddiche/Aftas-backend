@@ -77,6 +77,11 @@ public class RankingServiceImpl extends BaseService<Ranking, Long> implements Ra
         rankingRepository.deleteById(fetchedRanking.get().getId());
     }
 
+    @Override
+    public Boolean checkIfMemberIsRegisteredInCompetition(Member member, Competition competition) {
+        return rankingRepository.existsByMemberAndCompetition(member, competition);
+    }
+
 
     private Ranking buildRankingObject(RankingAddRequest rankingAddRequest , Long rankingId) {
         return Ranking.builder()

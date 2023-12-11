@@ -30,14 +30,17 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
 
     private final CompetitionService competitionService;
 
+    private final RankingService rankingService;
+
     private final MemberService memberService;
 
-    public HuntingServiceImpl(HuntingRepository huntingRepository, FishService fishService , ValidationHuntingService validation, CompetitionService competitionService, MemberService memberService) {
+    public HuntingServiceImpl(HuntingRepository huntingRepository, FishService fishService , ValidationHuntingService validation, CompetitionService competitionService, RankingService rankingService, MemberService memberService) {
         super(huntingRepository , Hunting.class);
         this.huntingRepository = huntingRepository;
         this.validation = validation;
         this.fishService = fishService;
         this.competitionService = competitionService;
+        this.rankingService = rankingService;
         this.memberService = memberService;
     }
     @Override
@@ -66,7 +69,8 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
 
         Optional<Hunting> hunting = huntingRepository.findByCompetitionAndMemberAndFish(competition, member, huntedFish);
 
-        if(hunting.isEmpty()){
+        // Check if the user has been registred to the competition
+        if(hunting.isEmpty() && rankingService.checkIfMemberIsRegisteredInCompetition(member, competition)){
             huntingRepository.save(buildHuntingObject(1, competition, member, huntedFish, null));
             return;
         }
