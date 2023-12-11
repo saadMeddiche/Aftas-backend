@@ -35,6 +35,12 @@ public class CompetitionController {
         return competitionService.getAllCompetitionsWithPagination(pageable);
     }
 
+    @GetMapping("/results/{competitionId}")
+    public ResponseEntity<?> getResults(@PathVariable Long competitionId) {
+         competitionService.results(competitionId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping()
     public ResponseEntity<?> createCompetition(@Valid @RequestBody CompetitionRequest competitionRequest) {
         Competition addedCompetition = competitionService.createCompetition(competitionRequest);

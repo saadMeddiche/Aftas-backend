@@ -26,5 +26,7 @@ public interface CompetitionService {
 
     public void deleteCompetition(Long id);
 
+    public void results(Long id);
+
 
 }

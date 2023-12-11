@@ -2,6 +2,7 @@ package com.clubs.aftas.services.implementations;
 
 import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
+import com.clubs.aftas.entities.Hunting;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
@@ -82,6 +83,12 @@ public class CompetitionServiceImpl extends BaseService<Competition, Long> imple
         deleteEntityById(id);
     }
 
+    @Override
+    public void results(Long competitionId) {
+        Competition competition = getCompetitionById(competitionId);
+        blCompetitionService.resultsOfCompetition(competition);
+    }
+
 
     private Competition buildCompetition( CompetitionRequest competitionRequest , Long competitionId) {
 
@@ -103,6 +110,7 @@ public class CompetitionServiceImpl extends BaseService<Competition, Long> imple
                 .location(competitionRequest.getLocation())
                 .amount(competitionRequest.getAmount())
                 .rankings(new ArrayList<Ranking>())
+                .huntings(new ArrayList<Hunting>())
                 .build();
     }
 }

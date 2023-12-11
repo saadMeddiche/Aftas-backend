@@ -56,4 +56,9 @@ public class Competition {
     @JsonIgnoreProperties("competition")
     private List<Ranking> rankings;
 
+    @OneToMany(mappedBy = "competition")
+    @Column(nullable = true)
+    @JsonIgnoreProperties("competition")
+    private List<Hunting> huntings;
+
 }

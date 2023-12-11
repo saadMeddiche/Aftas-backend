@@ -1,11 +1,22 @@
 package com.clubs.aftas.services.businessLogic;
 
+import com.clubs.aftas.entities.Competition;
+import com.clubs.aftas.entities.Fish;
+import com.clubs.aftas.entities.Ranking;
+import com.clubs.aftas.repositories.RankingRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
+@AllArgsConstructor
 public class BLCompetitionService {
+
+    private final RankingRepository rankingRepository;
 
     public String createCodeForCompetition(String location , LocalDate date) {
 
@@ -33,5 +44,68 @@ public class BLCompetitionService {
 
        return stringBuilder.toString();
 
+    }
+
+    public void resultsOfCompetition(Competition competition) {
+
+        Map<Long, Integer> result = calculateResultOfParticipation(competition);
+
+        updateRankings(competition, result);
+
+
+        List<Ranking> rankings = rankingRepository.findByCompetitionOrderByScoreDesc(competition);
+
+        makingRanks(rankings);
+
+
+        rankingRepository.saveAll(rankings);
+    }
+
+    private void makingRanks(List<Ranking> rankings) {
+        int rank = 1;
+        int previousScore = 999999999;
+
+        for (Ranking ranking : rankings) {
+            int currentScore = ranking.getScore();
+
+            if (currentScore < previousScore) {
+                ranking.setRank(rank);
+            }else if(currentScore == previousScore){
+                ranking.setRank(rank - 1);
+                continue;
+            }
+
+            rank++;
+            previousScore = currentScore;
+        }
+    }
+
+
+
+    public Map<Long, Integer> calculateResultOfParticipation(Competition competition) {
+        return competition.getHuntings().stream()
+                .collect(Collectors.groupingBy(
+                        hunting -> hunting.getMember().getId(),
+                        Collectors.summingInt(hunting -> {
+                            Fish fish = hunting.getFish();
+                            int points = fish.getLevel().getPoints();
+                            int numberOfFish = hunting.getNumberOfFish();
+                            return points * numberOfFish;
+                        })
+                ));
+    }
+
+    public void updateRankings(Competition competition , Map<Long, Integer> result) {
+
+        List<Ranking> updatedRankings = competition.getRankings().stream()
+                .map(ranking -> {
+                    Long memberId = ranking.getMember().getId();
+                    Integer newScore = result.get(memberId);
+                    ranking.setScore(newScore);
+                    return ranking;
+                })
+                .collect(Collectors.toList());
+
+        rankingRepository.saveAll(updatedRankings);
     }
 }
