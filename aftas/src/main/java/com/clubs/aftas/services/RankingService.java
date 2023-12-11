@@ -1,5 +1,6 @@
 package com.clubs.aftas.services;
 
+import com.clubs.aftas.dtos.ranking.requests.RankingAddRequest;
 import com.clubs.aftas.entities.Ranking;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,6 @@ public interface RankingService {
 
     public Ranking getRankingById(Long id);
 
-    public Ranking registerAMemberInACompetition(Ranking ranking);
+    public Ranking registerAMemberInACompetition(RankingAddRequest rankingAddRequest);
 
 }

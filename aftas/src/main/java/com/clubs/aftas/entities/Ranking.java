@@ -20,12 +20,11 @@ public class Ranking {
     private Long id;
 
     @Positive(message = "Rank must be positive")
-    @NotNull(message = "Rank cannot be null")
     private Integer rank;
 
     @PositiveOrZero(message = "Score must be positive")
     @NotNull(message = "Score cannot be null")
-    private Integer Score;
+    private Integer score;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
