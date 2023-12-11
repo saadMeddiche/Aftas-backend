@@ -1,6 +1,7 @@
 package com.clubs.aftas.services.validations;
 
 import com.clubs.aftas.dtos.ranking.requests.RankingAddRequest;
+import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.handlingExceptions.costumExceptions.AlreadyExistsException;
 import com.clubs.aftas.repositories.RankingRepository;
@@ -16,6 +17,12 @@ public class ValidationRankingService {
     private final RankingRepository rankingRepository;
 
     public void validationRankingWhenCreating(Ranking ranking) {
+
+        Competition competition = ranking.getCompetition();
+
+        if(competition.getNumberOfParticipants() == competition.getRankings().size()) {
+            throw new AlreadyExistsException("The competition is already full");
+        }
 
         Optional<Ranking> fatchedRanking = rankingRepository.findByMemberAndCompetition(ranking.getMember(), ranking.getCompetition());
 
