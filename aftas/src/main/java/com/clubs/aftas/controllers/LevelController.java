@@ -37,13 +37,13 @@ public class LevelController {
 
     @PostMapping()
     public ResponseEntity<?> createLevel(@Valid @RequestBody LevelRequest levelRequest) {
-//        Level addedLevel = levelService.createLevel(levelRequest);
-        return new ResponseEntity<>("Coming Soon !", HttpStatus.CREATED);
+        Level addedLevel = levelService.createLevel(levelRequest);
+        return new ResponseEntity<>(addedLevel, HttpStatus.CREATED);
     }
 
     @PutMapping("/{levelId}")
     public ResponseEntity<?> updateLevel(@PathVariable Long levelId,@Valid @RequestBody LevelRequest levelRequest) {
-//        Level addedLevel = levelService.updateLevel(levelRequest, levelId);
-        return new ResponseEntity<>("Coming Soon !", HttpStatus.OK);
+        Level updatedLevel = levelService.updateLevel(levelRequest, levelId);
+        return new ResponseEntity<>(updatedLevel, HttpStatus.OK);
     }
 }

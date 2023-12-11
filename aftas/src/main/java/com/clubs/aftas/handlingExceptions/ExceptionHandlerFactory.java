@@ -1,9 +1,6 @@
 package com.clubs.aftas.handlingExceptions;
 
-import com.clubs.aftas.handlingExceptions.costumExceptions.AlreadyExistsException;
-import com.clubs.aftas.handlingExceptions.costumExceptions.DateValidationException;
-import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
-import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
+import com.clubs.aftas.handlingExceptions.costumExceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -38,6 +35,11 @@ public class ExceptionHandlerFactory {
 
     @ExceptionHandler(DoNotExistException.class)
     public ResponseEntity<?> handleDoNotExistException(DoNotExistException exception) {
+        return new ResponseEntity<>(exception.getError() , HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<?> handleValidationException(ValidationException exception) {
         return new ResponseEntity<>(exception.getError() , HttpStatus.NOT_FOUND);
     }
 
