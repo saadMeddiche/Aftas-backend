@@ -17,8 +17,6 @@ public interface HuntingService {
 
     public Hunting getHuntingById(Long id);
 
-    public List<Member> getParticipants(Hunting hunting);
-
     public Hunting createHunting(HuntingRequest huntingRequest);
 
     public Hunting updateHunting(HuntingRequest hunting , Long huntingId);
