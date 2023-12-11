@@ -15,6 +15,6 @@ public interface RankingService {
 
     public Ranking getRankingById(Long id);
 
-    public Ranking createRanking(Ranking ranking);
+    public Ranking registerAMemberInACompetition(Ranking ranking);
 
 }

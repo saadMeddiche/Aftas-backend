@@ -42,7 +42,7 @@ public class RankingServiceImpl extends BaseService<Ranking, Long> implements Ra
     }
 
     @Override
-    public Ranking createRanking(Ranking ranking) {
+    public Ranking registerAMemberInACompetition(Ranking ranking) {
 
         return rankingRepository.save(ranking);
     }
