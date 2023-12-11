@@ -13,10 +13,12 @@ import lombok.*;
 @AllArgsConstructor
 public class LevelRequest {
 
+    @NotNull(message = "Description cannot be null")
     private String description;
 
     @Column(unique = true)
     @Positive(message = "Points must be positive")
+    @NotNull(message = "Points cannot be null")
     private Integer points;
 
 }

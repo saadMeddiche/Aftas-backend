@@ -2,10 +2,7 @@ package com.clubs.aftas.dtos.fish.requests;
 
 import com.clubs.aftas.entities.Level;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
@@ -23,6 +20,7 @@ public class FishRequest {
 
     @NotNull(message = "Average weight cannot be null")
     @Positive(message = "Average weight must be positive")
+    @Max(value = 20000, message = "Average weight must be less than or equal to 20000")
     private Double averageWeight;
 
     // Many instances of Fish Class can be associated with one level
