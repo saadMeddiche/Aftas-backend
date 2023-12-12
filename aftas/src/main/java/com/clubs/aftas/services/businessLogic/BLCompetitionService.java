@@ -52,11 +52,9 @@ public class BLCompetitionService {
 
         updateRankings(competition, result);
 
-
         List<Ranking> rankings = rankingRepository.findByCompetitionOrderByScoreDesc(competition);
 
         makingRanks(rankings);
-
 
         rankingRepository.saveAll(rankings);
     }
