@@ -1,5 +1,6 @@
 package com.clubs.aftas.services;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.member.requests.MemberRequest;
 import com.clubs.aftas.dtos.member.requests.MemberRequest;
 import com.clubs.aftas.entities.Competition;
@@ -26,4 +27,8 @@ public interface MemberService {
     public Member updateMember(MemberRequest member , Long memberId);
 
     public void deleteMember(Long id);
+
+    public List<Member> searchMembersByCriteria(List<FilterDTO> filters);
+
+    public List<Member> searchMembers(String value);
 }

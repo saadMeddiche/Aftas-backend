@@ -2,6 +2,7 @@ package com.clubs.aftas.controllers;
 
 import com.clubs.aftas.dtos.fish.requests.FishRequest;
 import com.clubs.aftas.entities.Fish;
+import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.services.FishService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -46,5 +47,11 @@ public class FishController {
     public ResponseEntity<?> updateFish(@PathVariable Long fishId,@Valid @RequestBody FishRequest fishRequest) {
         Fish updatedFish = fishService.updateFish(fishRequest, fishId);
         return new ResponseEntity<>(updatedFish, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{value}")
+    public ResponseEntity<?> searchFish(@PathVariable String value) {
+        List<Fish> fishes = fishService.searchFishs(value);
+        return new ResponseEntity<>(fishes, HttpStatus.OK);
     }
 }

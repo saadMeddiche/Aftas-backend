@@ -1,17 +1,22 @@
 package com.clubs.aftas.services;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.metamodel.SingularAttribute;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.Field;
+import java.util.*;
 
+import jakarta.persistence.criteria.Predicate;
 
 
 public class BaseService<T, ID> {
@@ -43,5 +48,68 @@ public class BaseService<T, ID> {
     public void deleteEntityById(ID id){
         Optional.of(repository.findById(id)).filter(Optional::isPresent).orElseThrow(() -> new DoNotExistException("No "+ entityClass.getSimpleName()+" has been found with id: " + id));
         repository.deleteById(id);
+    }
+
+
+    public <T> Specification<T> searchByCriteria(List<FilterDTO> filters) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (filters != null && !filters.isEmpty()) {
+                for (FilterDTO filter : filters) {
+                    String columnName = filter.getColumnName();
+                    Object columnValue = filter.getColumnValue();
+
+                    if (isValidColumn(entityClass, columnName)) {
+                        String likeSearchTerm = "%" + columnValue.toString().toLowerCase() + "%";
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(columnName)), likeSearchTerm));
+                    }
+                }
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+
+    public <T> Specification<T> search(String searchValue) {
+        return new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                if (searchValue == null || searchValue.isEmpty()) {
+                    return criteriaBuilder.conjunction();
+                }
+
+                List<Predicate> predicates = new ArrayList<>();
+
+                for (Field field: entityClass.getDeclaredFields()) {
+
+                    String attributeName = field.getName();
+
+
+                    if(field.getType().equals(String.class)) {
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(attributeName)), "%" + searchValue.toLowerCase() + "%"));
+                    }
+
+//                    else if(field.getType().equals(Double.class)) {
+//                        predicates.add(criteriaBuilder.equal(root.get(attributeName), searchValue));
+//                    }
+
+
+
+
+                }
+
+                return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+            }
+        };
+    }
+
+    private static <T> boolean isValidColumn(Class<T> entityClass, String columnName) {
+        try {
+            Field field = entityClass.getDeclaredField(columnName);
+            return field != null;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
     }
 }

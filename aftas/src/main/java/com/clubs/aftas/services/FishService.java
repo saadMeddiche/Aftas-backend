@@ -3,6 +3,7 @@ package com.clubs.aftas.services;
 
 import com.clubs.aftas.dtos.fish.requests.FishRequest;
 import com.clubs.aftas.entities.Fish;
+import com.clubs.aftas.entities.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,4 +25,6 @@ public interface FishService {
     void deleteFish(Long id);
 
     void createDefaultFishes();
+
+    public List<Fish> searchFishs(String value);
 }

@@ -2,6 +2,8 @@ package com.clubs.aftas.services.implementations;
 
 import com.clubs.aftas.dtos.fish.requests.FishRequest;
 import com.clubs.aftas.entities.Fish;
+import com.clubs.aftas.entities.Member;
+import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.repositories.FishRepository;
 import com.clubs.aftas.services.BaseService;
 import com.clubs.aftas.services.FishService;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FishServiceImpl extends BaseService<Fish, Long> implements FishService {
@@ -99,5 +102,11 @@ public class FishServiceImpl extends BaseService<Fish, Long> implements FishServ
         } catch (IOException e) {
             System.err.println("Error in adding fishes: " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<Fish> searchFishs(String value) {
+        return Optional.of(fishRepository.findAll(search(value)))
+                .orElseThrow(() -> new EmptyException("No fish has been found"));
     }
 }

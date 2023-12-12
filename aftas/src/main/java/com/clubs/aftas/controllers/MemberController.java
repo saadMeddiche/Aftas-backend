@@ -1,5 +1,6 @@
 package com.clubs.aftas.controllers;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.member.requests.MemberRequest;
 import com.clubs.aftas.dtos.member.requests.MemberRequest;
 import com.clubs.aftas.entities.Competition;
@@ -44,9 +45,17 @@ public class MemberController {
         return new ResponseEntity<>(addedMember, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{memberId}")
-    public ResponseEntity<?> updateMember(@PathVariable Long memberId, @Valid @RequestBody MemberRequest memberRequest) {
-        Member updatedMember = memberService.updateMember(memberRequest, memberId);
-        return new ResponseEntity<>(updatedMember, HttpStatus.OK);
+    @PostMapping("/searchByCriteria")
+    public ResponseEntity<?> searchMembersByCriteria(@RequestBody List<FilterDTO> filters) {
+        List<Member> members = memberService.searchMembersByCriteria(filters);
+        return new ResponseEntity<>(members, HttpStatus.OK);
     }
+
+    @GetMapping("/search/{value}")
+    public ResponseEntity<?> searchMembers(@PathVariable String value) {
+        List<Member> members = memberService.searchMembers(value);
+        return new ResponseEntity<>(members, HttpStatus.OK);
+    }
+
+
 }

@@ -1,25 +1,33 @@
 package com.clubs.aftas.services.implementations;
 
-import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
+
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.member.requests.MemberRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
-import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
+
 import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.repositories.MemberRepository;
 import com.clubs.aftas.services.BaseService;
 import com.clubs.aftas.services.MemberService;
 import com.clubs.aftas.services.businessLogic.BLMemberService;
 import com.clubs.aftas.services.validations.ValidationMemberService;
-import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import jakarta.persistence.criteria.Predicate;
+
+
 
 @Service
 
@@ -76,6 +84,18 @@ public class MemberServiceImpl extends BaseService<Member, Long> implements Memb
 
         // Save The Member
         return memberRepository.save( buildCompetitionObject(memberRequest , memberId));
+    }
+
+    @Override
+    public List<Member> searchMembersByCriteria(List<FilterDTO> filters) {
+        return Optional.of(memberRepository.findAll(searchByCriteria(filters)))
+                .orElseThrow(() -> new EmptyException("No member has been found"));
+    }
+
+    @Override
+    public List<Member> searchMembers(String value) {
+        return Optional.of(memberRepository.findAll(search(value)))
+                .orElseThrow(() -> new EmptyException("No member has been found"));
     }
 
     @Override
