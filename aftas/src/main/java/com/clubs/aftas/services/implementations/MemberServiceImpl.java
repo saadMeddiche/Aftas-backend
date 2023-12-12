@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,6 +92,7 @@ public class MemberServiceImpl extends BaseService<Member, Long> implements Memb
                 .nationality(memberRequest.getNationality())
                 .identityDocument(memberRequest.getIdentityDocument())
                 .identityNumber(memberRequest.getIdentityNumber())
+                .rankings(new ArrayList<Ranking>())
                 .build();
 
     }

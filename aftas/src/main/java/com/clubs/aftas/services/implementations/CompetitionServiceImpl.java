@@ -1,5 +1,6 @@
 package com.clubs.aftas.services.implementations;
 
+import com.clubs.aftas.dtos.competition.Top;
 import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Hunting;
@@ -14,13 +15,13 @@ import com.clubs.aftas.services.businessLogic.BLCompetitionService;
 import com.clubs.aftas.services.validations.ValidationCompetitionService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -89,6 +90,43 @@ public class CompetitionServiceImpl extends BaseService<Competition, Long> imple
         blCompetitionService.resultsOfCompetition(competition);
     }
 
+
+    @Override
+    public Map<Integer, List<Top>> getTopThree(Long competitionId) {
+
+        Competition competition = getCompetitionById(competitionId);
+
+        List<Ranking> rankingList = competition.getRankings();
+
+
+        Map<Integer, List<Ranking>> rankingsByScore = rankingList.stream()
+                .collect(Collectors.groupingBy(Ranking::getScore));
+
+
+        List<Integer> bigScores = rankingList.stream()
+                .map(Ranking::getScore)
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
+
+
+        List<Integer> topThreeScores = bigScores.stream().limit(3).collect(Collectors.toList());
+
+
+        Map<Integer, List<Top>> topThree = new HashMap<>();
+
+        int rank = 1;
+        for (Integer score : topThreeScores) {
+            List<Ranking> rankingsWithScore = rankingsByScore.get(score);
+            List<Top> topList = rankingsWithScore.stream()
+                    .map(ranking -> new Top(ranking.getMember(), ranking.getScore()))
+                    .collect(Collectors.toList());
+            topThree.put(rank++, topList);
+        }
+
+        return topThree;
+
+    }
 
     private Competition buildCompetition( CompetitionRequest competitionRequest , Long competitionId) {
 

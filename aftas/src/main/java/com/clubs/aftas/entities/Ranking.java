@@ -30,12 +30,12 @@ public class Ranking {
     @ManyToOne
     @JoinColumn(name = "member_id")
     @NotNull(message = "Member cannot be null")
-    @JsonIgnoreProperties("rankings")
+    @JsonIgnoreProperties({"rankings"})
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "competition_id")
     @NotNull(message = "Competition cannot be null")
-    @JsonIgnoreProperties("rankings")
+    @JsonIgnoreProperties({"rankings" , "huntings"})
     private Competition competition;
 }

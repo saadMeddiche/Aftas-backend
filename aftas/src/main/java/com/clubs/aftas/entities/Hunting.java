@@ -1,5 +1,6 @@
 package com.clubs.aftas.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -27,9 +28,11 @@ public class Hunting {
 
     @ManyToOne
     @NotNull(message = "Member cannot be null")
+    @JsonIgnoreProperties("rankings")
     private Member member;
 
     @ManyToOne
     @NotNull(message = "Competition cannot be null")
+    @JsonIgnoreProperties("huntings")
     private Competition competition;
 }

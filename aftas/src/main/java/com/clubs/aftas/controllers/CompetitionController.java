@@ -1,8 +1,10 @@
 package com.clubs.aftas.controllers;
 
+import com.clubs.aftas.dtos.competition.Top;
 import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.services.CompetitionService;
+import com.clubs.aftas.services.implementations.CompetitionServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/V1/competitions")
@@ -39,6 +42,13 @@ public class CompetitionController {
     public ResponseEntity<?> getResults(@PathVariable Long competitionId) {
          competitionService.results(competitionId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/topthree/{competitionId}")
+    public ResponseEntity<?> getTopThree(@PathVariable Long competitionId) {
+
+        Map<Integer, List<Top>> topThree = competitionService.getTopThree(competitionId);
+        return new ResponseEntity<>(topThree, HttpStatus.OK);
     }
 
     @PostMapping()

@@ -98,7 +98,8 @@ public class BLCompetitionService {
         List<Ranking> updatedRankings = competition.getRankings().stream()
                 .map(ranking -> {
                     Long memberId = ranking.getMember().getId();
-                    Integer newScore = result.get(memberId);
+                    // Why Default , in case if the member didn't catch any fish (no huntings)
+                    Integer newScore = result.getOrDefault(memberId , 0);
                     ranking.setScore(newScore);
                     return ranking;
                 })
