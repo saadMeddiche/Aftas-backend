@@ -31,4 +31,6 @@ public interface MemberService {
     public List<Member> searchMembersByCriteria(List<FilterDTO> filters);
 
     public List<Member> searchMembers(String value);
+
+
 }

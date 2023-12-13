@@ -4,9 +4,7 @@ import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import jakarta.persistence.metamodel.SingularAttribute;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.lang.reflect.Field;
 import java.util.*;
-
-import jakarta.persistence.criteria.Predicate;
 
 
 public class BaseService<T, ID> {
@@ -85,16 +81,19 @@ public class BaseService<T, ID> {
 
                     String attributeName = field.getName();
 
+                    predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(attributeName).as(String.class)), "%" + searchValue.toLowerCase() + "%"));
 
-                    if(field.getType().equals(String.class)) {
-                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(attributeName)), "%" + searchValue.toLowerCase() + "%"));
-                    }
-
-//                    else if(field.getType().equals(Double.class)) {
-//                        predicates.add(criteriaBuilder.equal(root.get(attributeName), searchValue));
+//                    if(field.getType().equals(String.class)) {
+//                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(attributeName)), "%" + searchValue.toLowerCase() + "%"));
 //                    }
-
-
+//
+//                   if(field.getType().equals(Integer.class)) {
+//                        predicates.add(criteriaBuilder.equal(root.get(attributeName),searchValue));
+//                   }
+//
+//                    if(field.getType().equals(Double.class) ) {
+//                        predicates.add(criteriaBuilder.like(root.get(attributeName), searchValue ));
+//                    }
 
 
                 }

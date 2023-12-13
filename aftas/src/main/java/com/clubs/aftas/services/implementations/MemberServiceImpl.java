@@ -92,6 +92,8 @@ public class MemberServiceImpl extends BaseService<Member, Long> implements Memb
                 .orElseThrow(() -> new EmptyException("No member has been found"));
     }
 
+
+
     @Override
     public List<Member> searchMembers(String value) {
         return Optional.of(memberRepository.findAll(search(value)))
