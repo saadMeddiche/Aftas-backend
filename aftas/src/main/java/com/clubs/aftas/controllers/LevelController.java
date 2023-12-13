@@ -1,7 +1,9 @@
 package com.clubs.aftas.controllers;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.level.requests.LevelRequest;
 import com.clubs.aftas.entities.Level;
+import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.services.LevelService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -51,5 +53,17 @@ public class LevelController {
     public ResponseEntity<?> deleteLevel(@PathVariable Long levelId) {
        levelService.deleteLevel(levelId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/searchByCriteria")
+    public ResponseEntity<?> searchLevelsByCriteria(@RequestBody List<FilterDTO> filters) {
+        List<Level> levels = levelService.searchLevelsByCriteria(filters);
+        return new ResponseEntity<>(levels, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{value}")
+    public ResponseEntity<?> searchLevels(@PathVariable String value) {
+        List<Level> levels = levelService.searchLevels(value);
+        return new ResponseEntity<>(levels, HttpStatus.OK);
     }
 }

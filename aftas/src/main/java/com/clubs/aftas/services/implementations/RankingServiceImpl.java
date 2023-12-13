@@ -1,10 +1,12 @@
 package com.clubs.aftas.services.implementations;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.ranking.requests.RankingAddRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
+import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.repositories.RankingRepository;
 import com.clubs.aftas.services.BaseService;
 import com.clubs.aftas.services.CompetitionService;
@@ -80,6 +82,20 @@ public class RankingServiceImpl extends BaseService<Ranking, Long> implements Ra
     @Override
     public Boolean checkIfMemberIsRegisteredInCompetition(Member member, Competition competition) {
         return rankingRepository.existsByMemberAndCompetition(member, competition);
+    }
+
+    @Override
+    public List<Ranking> searchRankingsByCriteria(List<FilterDTO> filters) {
+        return Optional.of(rankingRepository.findAll(searchByCriteria(filters)))
+                .orElseThrow(() -> new EmptyException("No ranking has been found"));
+    }
+
+
+
+    @Override
+    public List<Ranking> searchRankings(String value) {
+        return Optional.of(rankingRepository.findAll(search(value)))
+                .orElseThrow(() -> new EmptyException("No ranking has been found"));
     }
 
 

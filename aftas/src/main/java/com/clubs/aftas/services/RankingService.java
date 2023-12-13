@@ -1,5 +1,6 @@
 package com.clubs.aftas.services;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.ranking.requests.RankingAddRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
@@ -23,5 +24,9 @@ public interface RankingService {
     public void unregisterAMemberFromACompetition(Long memberId, Long competitionId);
 
     public Boolean checkIfMemberIsRegisteredInCompetition(Member member, Competition competition);
+
+    public List<Ranking> searchRankingsByCriteria(List<FilterDTO> filters);
+
+    public List<Ranking> searchRankings(String value);
 
 }

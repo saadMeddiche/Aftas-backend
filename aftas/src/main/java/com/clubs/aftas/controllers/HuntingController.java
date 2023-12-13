@@ -1,7 +1,9 @@
 package com.clubs.aftas.controllers;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.huntings.requests.HuntingRequest;
 import com.clubs.aftas.entities.Hunting;
+import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.services.HuntingService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -45,5 +47,17 @@ public class HuntingController {
     public ResponseEntity<?> decreaseHunting(@PathVariable Long huntingId) {
         huntingService.decreaseHunting(huntingId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/searchByCriteria")
+    public ResponseEntity<?> searchHuntingsByCriteria(@RequestBody List<FilterDTO> filters) {
+        List<Hunting> huntings = huntingService.searchHuntingsByCriteria(filters);
+        return new ResponseEntity<>(huntings, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{value}")
+    public ResponseEntity<?> searchHuntings(@PathVariable String value) {
+        List<Hunting> huntings = huntingService.searchHuntings(value);
+        return new ResponseEntity<>(huntings, HttpStatus.OK);
     }
 }

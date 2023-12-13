@@ -1,8 +1,10 @@
 package com.clubs.aftas.controllers;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.competition.Top;
 import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
+import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.services.CompetitionService;
 import com.clubs.aftas.services.implementations.CompetitionServiceImpl;
 import jakarta.validation.Valid;
@@ -61,5 +63,17 @@ public class CompetitionController {
     public ResponseEntity<?> updateCompetition(@PathVariable Long competitionId,@Valid @RequestBody CompetitionRequest competitionRequest) {
         Competition updatedCompetition = competitionService.updateCompetition(competitionRequest, competitionId);
         return new ResponseEntity<>(updatedCompetition, HttpStatus.OK);
+    }
+
+    @PostMapping("/searchByCriteria")
+    public ResponseEntity<?> searchCompetitionsByCriteria(@RequestBody List<FilterDTO> filters) {
+        List<Competition> competitions = competitionService.searchCompetitionsByCriteria(filters);
+        return new ResponseEntity<>(competitions, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{value}")
+    public ResponseEntity<?> searchCompetitions(@PathVariable String value) {
+        List<Competition> competitions = competitionService.searchCompetitions(value);
+        return new ResponseEntity<>(competitions, HttpStatus.OK);
     }
 }

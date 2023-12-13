@@ -1,6 +1,7 @@
 package com.clubs.aftas.services;
 
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.competition.Top;
 import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
@@ -32,6 +33,10 @@ public interface CompetitionService {
     public void results(Long id);
 
     public Map<Integer, List<Top>> getTopThree(Long competitionId);
+
+    public List<Competition> searchCompetitionsByCriteria(List<FilterDTO> filters);
+
+    public List<Competition> searchCompetitions(String value);
 
 
 }

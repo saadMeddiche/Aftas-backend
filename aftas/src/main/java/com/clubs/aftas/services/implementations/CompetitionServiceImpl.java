@@ -1,5 +1,6 @@
 package com.clubs.aftas.services.implementations;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.competition.Top;
 import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
@@ -126,6 +127,20 @@ public class CompetitionServiceImpl extends BaseService<Competition, Long> imple
 
         return topThree;
 
+    }
+
+    @Override
+    public List<Competition> searchCompetitionsByCriteria(List<FilterDTO> filters) {
+        return Optional.of(competitionRepository.findAll(searchByCriteria(filters)))
+                .orElseThrow(() -> new EmptyException("No competition has been found"));
+    }
+
+
+
+    @Override
+    public List<Competition> searchCompetitions(String value) {
+        return Optional.of(competitionRepository.findAll(search(value)))
+                .orElseThrow(() -> new EmptyException("No competition has been found"));
     }
 
     private Competition buildCompetition( CompetitionRequest competitionRequest , Long competitionId) {

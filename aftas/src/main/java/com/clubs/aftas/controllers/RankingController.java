@@ -1,7 +1,9 @@
 package com.clubs.aftas.controllers;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.ranking.requests.RankingAddRequest;
 
+import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.services.RankingService;
 import jakarta.validation.Valid;
@@ -47,5 +49,17 @@ public class RankingController {
     public ResponseEntity<?> unregisterAMemberFromACompetition(@PathVariable Long memberId, @PathVariable Long competitionId) {
         rankingService.unregisterAMemberFromACompetition(memberId, competitionId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/searchByCriteria")
+    public ResponseEntity<?> searchRankingsByCriteria(@RequestBody List<FilterDTO> filters) {
+        List<Ranking> rankings = rankingService.searchRankingsByCriteria(filters);
+        return new ResponseEntity<>(rankings, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{value}")
+    public ResponseEntity<?> searchRankings(@PathVariable String value) {
+        List<Ranking> rankings = rankingService.searchRankings(value);
+        return new ResponseEntity<>(rankings, HttpStatus.OK);
     }
 }

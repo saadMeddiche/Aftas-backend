@@ -1,6 +1,7 @@
 package com.clubs.aftas.services;
 
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.fish.requests.FishRequest;
 import com.clubs.aftas.entities.Fish;
 import com.clubs.aftas.entities.Member;
@@ -25,6 +26,8 @@ public interface FishService {
     void deleteFish(Long id);
 
     void createDefaultFishes();
+
+    public List<Fish> searchFishsByCriteria(List<FilterDTO> filters);
 
     public List<Fish> searchFishs(String value);
 }

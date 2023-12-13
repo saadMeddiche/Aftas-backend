@@ -1,8 +1,11 @@
 package com.clubs.aftas.services.implementations;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.level.requests.LevelRequest;
 import com.clubs.aftas.entities.Level;
 
+import com.clubs.aftas.entities.Member;
+import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.services.BaseService;
 import com.clubs.aftas.services.businessLogic.BLLevelService;
 import com.clubs.aftas.services.validations.ValidationLevelService;
@@ -80,6 +83,20 @@ public class LevelServiceImpl extends BaseService<Level, Long> implements LevelS
     public void deleteLevel(Long id) {
         validation.validateLevelWhenDeleting(getEntityById(id));
         deleteEntityById(id);
+    }
+
+    @Override
+    public List<Level> searchLevelsByCriteria(List<FilterDTO> filters) {
+        return Optional.of(levelRepository.findAll(searchByCriteria(filters)))
+                .orElseThrow(() -> new EmptyException("No level has been found"));
+    }
+
+
+
+    @Override
+    public List<Level> searchLevels(String value) {
+        return Optional.of(levelRepository.findAll(search(value)))
+                .orElseThrow(() -> new EmptyException("No level has been found"));
     }
 
     @Override

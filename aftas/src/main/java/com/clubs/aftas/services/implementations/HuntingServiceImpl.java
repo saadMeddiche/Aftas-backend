@@ -1,11 +1,13 @@
 package com.clubs.aftas.services.implementations;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.huntings.requests.HuntingRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Fish;
 import com.clubs.aftas.entities.Hunting;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.handlingExceptions.costumExceptions.DoNotExistException;
+import com.clubs.aftas.handlingExceptions.costumExceptions.EmptyException;
 import com.clubs.aftas.handlingExceptions.costumExceptions.ValidationException;
 import com.clubs.aftas.repositories.HuntingRepository;
 import com.clubs.aftas.services.*;
@@ -108,6 +110,20 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
         hunting.get().setNumberOfFish(hunting.get().getNumberOfFish() - 1);
 
         huntingRepository.save(hunting.get());
+    }
+
+    @Override
+    public List<Hunting> searchHuntingsByCriteria(List<FilterDTO> filters) {
+        return Optional.of(huntingRepository.findAll(searchByCriteria(filters)))
+                .orElseThrow(() -> new EmptyException("No hunting has been found"));
+    }
+
+
+
+    @Override
+    public List<Hunting> searchHuntings(String value) {
+        return Optional.of(huntingRepository.findAll(search(value)))
+                .orElseThrow(() -> new EmptyException("No hunting has been found"));
     }
 
     public Hunting buildHuntingObject(Integer numberOfFish, Competition competition, Member member, Fish huntedFish, Long huntingId){

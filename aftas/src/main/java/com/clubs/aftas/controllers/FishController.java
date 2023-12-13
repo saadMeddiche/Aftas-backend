@@ -1,8 +1,10 @@
 package com.clubs.aftas.controllers;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.fish.requests.FishRequest;
 import com.clubs.aftas.entities.Fish;
 import com.clubs.aftas.entities.Member;
+import com.clubs.aftas.entities.Ranking;
 import com.clubs.aftas.services.FishService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -49,9 +51,15 @@ public class FishController {
         return new ResponseEntity<>(updatedFish, HttpStatus.OK);
     }
 
+    @PostMapping("/searchByCriteria")
+    public ResponseEntity<?> searchFishsByCriteria(@RequestBody List<FilterDTO> filters) {
+        List<Fish> fishs = fishService.searchFishsByCriteria(filters);
+        return new ResponseEntity<>(fishs, HttpStatus.OK);
+    }
+
     @GetMapping("/search/{value}")
-    public ResponseEntity<?> searchFish(@PathVariable String value) {
-        List<Fish> fishes = fishService.searchFishs(value);
-        return new ResponseEntity<>(fishes, HttpStatus.OK);
+    public ResponseEntity<?> searchFishs(@PathVariable String value) {
+        List<Fish> fishs = fishService.searchFishs(value);
+        return new ResponseEntity<>(fishs, HttpStatus.OK);
     }
 }

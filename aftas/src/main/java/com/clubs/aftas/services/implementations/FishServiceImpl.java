@@ -1,5 +1,6 @@
 package com.clubs.aftas.services.implementations;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.fish.requests.FishRequest;
 import com.clubs.aftas.entities.Fish;
 import com.clubs.aftas.entities.Member;
@@ -103,6 +104,14 @@ public class FishServiceImpl extends BaseService<Fish, Long> implements FishServ
             System.err.println("Error in adding fishes: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<Fish> searchFishsByCriteria(List<FilterDTO> filters) {
+        return Optional.of(fishRepository.findAll(searchByCriteria(filters)))
+                .orElseThrow(() -> new EmptyException("No fish has been found"));
+    }
+
+
 
     @Override
     public List<Fish> searchFishs(String value) {

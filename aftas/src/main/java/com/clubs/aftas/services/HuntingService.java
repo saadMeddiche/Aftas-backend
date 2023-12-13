@@ -1,5 +1,6 @@
 package com.clubs.aftas.services;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.huntings.requests.HuntingRequest;
 import com.clubs.aftas.entities.Hunting;
 import com.clubs.aftas.entities.Member;
@@ -20,4 +21,8 @@ public interface HuntingService {
     public void addHunting(HuntingRequest huntingRequest);
 
     public void decreaseHunting(Long huntingId);
+
+    public List<Hunting> searchHuntingsByCriteria(List<FilterDTO> filters);
+
+    public List<Hunting> searchHuntings(String value);
 }

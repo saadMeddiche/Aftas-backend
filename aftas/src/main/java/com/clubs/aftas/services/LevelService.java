@@ -1,5 +1,6 @@
 package com.clubs.aftas.services;
 
+import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.level.requests.LevelRequest;
 import com.clubs.aftas.dtos.level.requests.LevelRequest;
 import com.clubs.aftas.entities.Level;
@@ -26,5 +27,9 @@ public interface LevelService {
         void createDefaultLevels();
 
         public void deleteLevel(Long id);
+
+        public List<Level> searchLevelsByCriteria(List<FilterDTO> filters);
+
+        public List<Level> searchLevels(String value);
 
 }

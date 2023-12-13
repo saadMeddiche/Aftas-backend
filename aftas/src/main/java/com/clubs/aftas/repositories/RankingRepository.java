@@ -3,6 +3,7 @@ package com.clubs.aftas.repositories;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.swing.text.html.Option;
@@ -16,5 +17,7 @@ public interface RankingRepository extends JpaRepository<Ranking, Long> {
     Boolean existsByMemberAndCompetition(Member member, Competition competition);
 
     List<Ranking> findByCompetitionOrderByScoreDesc(Competition competition);
+
+    List<Ranking> findAll(Specification<Ranking> specification);
 
 }

@@ -81,7 +81,17 @@ public class BaseService<T, ID> {
 
                     String attributeName = field.getName();
 
+                    // https://discourse.hibernate.org/t/criteriabuilder-cast-function-example/6631
+
+                    if (List.class.isAssignableFrom(field.getType())) {
+                        continue;
+                    }
+
+                    System.out.printf("Field Type :" + root.get(attributeName).getJavaType());
+
                     predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(attributeName).as(String.class)), "%" + searchValue.toLowerCase() + "%"));
+
+
 
 //                    if(field.getType().equals(String.class)) {
 //                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(attributeName)), "%" + searchValue.toLowerCase() + "%"));
@@ -98,7 +108,9 @@ public class BaseService<T, ID> {
 
                 }
 
-                return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+                Predicate[] predicatess = predicates.toArray(new Predicate[0]);
+
+                return criteriaBuilder.or(predicatess);
             }
         };
     }
