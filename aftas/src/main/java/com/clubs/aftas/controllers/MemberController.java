@@ -6,6 +6,7 @@ import com.clubs.aftas.dtos.member.requests.MemberRequest;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Member;
+import com.clubs.aftas.handlingExceptions.costumExceptions.ValidationException;
 import com.clubs.aftas.services.MemberService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -60,12 +61,13 @@ public class MemberController {
 
     @GetMapping(value =  {"/search" , "/search/"})
     public ResponseEntity<?> searchMembersDefault( @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+
+        // check if page or size is null or negative
+        if (page < 0 || size < 0) throw new ValidationException("page and size must be greater than 0");
+
         PageRequest pageable = PageRequest.of(page, size);
         Page<Member> members = memberService.searchMembers("" , pageable);
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
-
-
-
 
 }
