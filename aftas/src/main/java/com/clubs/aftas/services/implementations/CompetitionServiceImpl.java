@@ -135,11 +135,9 @@ public class CompetitionServiceImpl extends BaseService<Competition, Long> imple
                 .orElseThrow(() -> new EmptyException("No competition has been found"));
     }
 
-
-
     @Override
-    public List<Competition> searchCompetitions(String value) {
-        return Optional.of(competitionRepository.findAll(search(value)))
+    public Page<Competition> searchCompetitions(String value , Pageable pageable) {
+        return Optional.of(competitionRepository.findAll(search(value) , pageable))
                 .orElseThrow(() -> new EmptyException("No competition has been found"));
     }
 

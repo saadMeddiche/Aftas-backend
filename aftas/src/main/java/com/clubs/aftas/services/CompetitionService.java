@@ -36,7 +36,7 @@ public interface CompetitionService {
 
     public List<Competition> searchCompetitionsByCriteria(List<FilterDTO> filters);
 
-    public List<Competition> searchCompetitions(String value);
+    public Page<Competition> searchCompetitions(String value , Pageable pageable);
 
 
 }

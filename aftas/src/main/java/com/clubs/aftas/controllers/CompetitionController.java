@@ -4,7 +4,9 @@ import com.clubs.aftas.dtos.FilterDTO;
 import com.clubs.aftas.dtos.competition.Top;
 import com.clubs.aftas.dtos.competition.requests.CompetitionRequest;
 import com.clubs.aftas.entities.Competition;
+import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
+import com.clubs.aftas.handlingExceptions.costumExceptions.ValidationException;
 import com.clubs.aftas.services.CompetitionService;
 import com.clubs.aftas.services.implementations.CompetitionServiceImpl;
 import jakarta.validation.Valid;
@@ -72,8 +74,20 @@ public class CompetitionController {
     }
 
     @GetMapping("/search/{value}")
-    public ResponseEntity<?> searchCompetitions(@PathVariable String value) {
-        List<Competition> competitions = competitionService.searchCompetitions(value);
+    public ResponseEntity<?> searchCompetitions(@PathVariable String value ,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Competition> competitions = competitionService.searchCompetitions(value , pageable);
+        return new ResponseEntity<>(competitions, HttpStatus.OK);
+    }
+
+    @GetMapping(value =  {"/search" , "/search/"})
+    public ResponseEntity<?> searchCompetitionsDefault( @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+
+        // check if page or size is null or negative
+        if (page < 0 || size < 0) throw new ValidationException("page and size must be greater than 0");
+
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Competition> competitions = competitionService.searchCompetitions("" , pageable);
         return new ResponseEntity<>(competitions, HttpStatus.OK);
     }
 }

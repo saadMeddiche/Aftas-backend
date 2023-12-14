@@ -22,6 +22,7 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long> 
     Optional<Competition> findByDate(LocalDate competitionDate);
 
     List<Competition> findAll(Specification<Competition> specification);
+    Page<Competition> findAll(Specification<Competition> specification , Pageable pageable);
 
 
 }
