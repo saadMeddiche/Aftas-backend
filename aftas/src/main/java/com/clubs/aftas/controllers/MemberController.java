@@ -58,6 +58,13 @@ public class MemberController {
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
+    @GetMapping(value =  {"/search" , "/search/"})
+    public ResponseEntity<?> searchMembersDefault( @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Member> members = memberService.searchMembers("" , pageable);
+        return new ResponseEntity<>(members, HttpStatus.OK);
+    }
+
 
 
 
