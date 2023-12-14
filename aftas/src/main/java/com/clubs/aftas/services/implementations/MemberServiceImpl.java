@@ -95,8 +95,8 @@ public class MemberServiceImpl extends BaseService<Member, Long> implements Memb
 
 
     @Override
-    public List<Member> searchMembers(String value) {
-        return Optional.of(memberRepository.findAll(search(value)))
+    public Page<Member> searchMembers(String value , Pageable pageable) {
+        return Optional.of(memberRepository.findAll(search(value) , pageable))
                 .orElseThrow(() -> new EmptyException("No member has been found"));
     }
 

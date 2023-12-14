@@ -19,6 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByIdentityDocumentAndIdentityNumber(Member.IdentityDocumentType identityDocument, String identityNumber);
 
 
+    Page<Member> findAll(Specification<Member> specification , Pageable pageable);
     List<Member> findAll(Specification<Member> specification);
 
 }

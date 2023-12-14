@@ -52,8 +52,9 @@ public class MemberController {
     }
 
     @GetMapping("/search/{value}")
-    public ResponseEntity<?> searchMembers(@PathVariable String value) {
-        List<Member> members = memberService.searchMembers(value);
+    public ResponseEntity<?> searchMembers(@PathVariable String value ,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Member> members = memberService.searchMembers(value , pageable);
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
