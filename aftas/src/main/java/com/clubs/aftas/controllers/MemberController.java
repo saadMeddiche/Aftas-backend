@@ -67,6 +67,12 @@ public class MemberController {
 
         PageRequest pageable = PageRequest.of(page, size);
         Page<Member> members = memberService.searchMembers("" , pageable);
+
+        int tototalPages = members.getTotalPages();
+
+        if(page >= tototalPages){
+            throw new ValidationException("The page is out of its range");
+        }
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 

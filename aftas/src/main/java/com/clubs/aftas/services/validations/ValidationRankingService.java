@@ -7,6 +7,7 @@ import com.clubs.aftas.handlingExceptions.costumExceptions.AlreadyExistsExceptio
 import com.clubs.aftas.handlingExceptions.costumExceptions.DateValidationException;
 import com.clubs.aftas.repositories.RankingRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -26,15 +27,15 @@ public class ValidationRankingService {
             throw new AlreadyExistsException("The competition is already full");
         }
 
-        // Check if the current date is before the date of competition by One day Or Less
-        if(competition.getDate().plusDays(1).isBefore(LocalDate.now())) {
+
+        if(LocalDate.now().plusDays(1).isEqual(competition.getDate())) {
             throw new DateValidationException("The date of registration is passed");
         }
 
         Optional<Ranking> fatchedRanking = rankingRepository.findByMemberAndCompetition(ranking.getMember(), ranking.getCompetition());
 
         if(fatchedRanking.isPresent()) {
-            throw new AlreadyExistsException("There is already a ranking for this member in this competition");
+            throw new AlreadyExistsException("This member is already registered in this competition");
         }
     }
 }

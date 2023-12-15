@@ -41,6 +41,7 @@ public class RankingController {
 
     @PostMapping()
     public ResponseEntity<?> createRanking(@Valid @RequestBody RankingAddRequest rankingRequest) {
+
         Ranking addedRanking = rankingService.registerAMemberInACompetition(rankingRequest);
         return new ResponseEntity<>(addedRanking, HttpStatus.CREATED);
     }

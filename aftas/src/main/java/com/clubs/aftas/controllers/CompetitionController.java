@@ -88,6 +88,13 @@ public class CompetitionController {
 
         PageRequest pageable = PageRequest.of(page, size);
         Page<Competition> competitions = competitionService.searchCompetitions("" , pageable);
+
+        int tototalPages = competitions.getTotalPages();
+
+        if(page >= tototalPages){
+            throw new ValidationException("The page is out of its range");
+        }
+
         return new ResponseEntity<>(competitions, HttpStatus.OK);
     }
 }
