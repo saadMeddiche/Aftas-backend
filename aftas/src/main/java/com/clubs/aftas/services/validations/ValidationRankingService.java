@@ -28,7 +28,7 @@ public class ValidationRankingService {
         }
 
 
-        if(LocalDate.now().plusDays(1).isEqual(competition.getDate())) {
+        if(LocalDate.now().plusDays(1).isEqual(competition.getDate()) || LocalDate.now().plusDays(1).isAfter(competition.getDate())) {
             throw new DateValidationException("The date of registration is passed");
         }
 
