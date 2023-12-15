@@ -41,22 +41,22 @@ public class CompetitionServiceImpl extends BaseService<Competition, Long> imple
 
     @Override
     public List<Competition> getAllCompetitions() {
-        return Optional.of(competitionRepository.findAll()).filter(competitions -> !competitions.isEmpty()).orElseThrow(() -> new EmptyException("No competitions have been added yet"));
+        return getAllEntities();
     }
 
     @Override
     public Page<Competition> getAllCompetitionsWithPagination(Pageable pageable){
-        return Optional.of(competitionRepository.findAll(pageable)).filter(competitions -> !competitions.isEmpty()).orElseThrow(() -> new EmptyException("No competition has been found"));
+        return getAllEntitiesWithPagination(pageable);
     }
 
     @Override
     public Competition getCompetitionById(Long id) {
-       return competitionRepository.findById(id).orElseThrow(() -> new DoNotExistException("No competition has been found with id: " + id));
+       return getEntityById(id);
     }
 
     @Override
-    public List<Member> getParticipants(Competition competition) {
-        return null;
+    public Page<Member> getParticipantsOfCompetition(Long competitionId, Pageable pageable) {
+       return Optional.of( competitionRepository.getMembersOfCompetition(competitionId , pageable)).orElseThrow(() -> new EmptyException("No participants in this competition"));
     }
 
     @Override

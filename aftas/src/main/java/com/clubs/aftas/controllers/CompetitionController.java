@@ -42,9 +42,16 @@ public class CompetitionController {
         return competitionService.getAllCompetitionsWithPagination(pageable);
     }
 
+    @GetMapping("/{competitionId}/participants")
+    public ResponseEntity<?> getParticipantsOfCompetition(@PathVariable Long competitionId , @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+         Page<Member> participants =  competitionService.getParticipantsOfCompetition(competitionId , pageable);
+        return new ResponseEntity<>(participants , HttpStatus.OK);
+    }
+
     @GetMapping("/results/{competitionId}")
     public ResponseEntity<?> getResults(@PathVariable Long competitionId) {
-         competitionService.results(competitionId);
+        competitionService.results(competitionId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
