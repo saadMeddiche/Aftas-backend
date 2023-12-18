@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,8 +72,13 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
 
         Optional<Hunting> hunting = huntingRepository.findByCompetitionAndMemberAndFish(competition, member, huntedFish);
 
-        // Check if the user has been not  registred to the competition
 
+        // Check if the date of competition has passed
+        if (competition.getDate().isBefore(LocalDate.now())) {
+            throw new ValidationException("The date of the competition has passed");
+        }
+
+        // Check if the user has been not  registred to the competition
         if(hunting.isEmpty() && !rankingService.checkIfMemberIsRegisteredInCompetition(member, competition)){
             throw new ValidationException("The member is not registred in the competition: " + competition.getCode());
         }
@@ -85,6 +91,8 @@ public class HuntingServiceImpl extends BaseService<Hunting, Long> implements Hu
         if(!validation.checkIfHuntedFishIsValid(huntedFish ,huntingRequest.getWeightOfHuntedFish())){
            throw new ValidationException("weight of hunted fish is not higher then the average weight of the fish");
         }
+
+
 
         hunting.get().setNumberOfFish(hunting.get().getNumberOfFish() + 1);
 
