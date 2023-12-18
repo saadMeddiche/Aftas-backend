@@ -42,10 +42,34 @@ public class CompetitionController {
         return competitionService.getAllCompetitionsWithPagination(pageable);
     }
 
-    @GetMapping("/{competitionId}/participants")
-    public ResponseEntity<?> getParticipantsOfCompetition(@PathVariable Long competitionId , @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+    @GetMapping("/{competitionId}/participants/{value}")
+    public ResponseEntity<?> searchMembersOfCompetition(@PathVariable Long competitionId , @PathVariable String value , @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        // check if page or size is null or negative
+        if (page < 0 || size < 0) throw new ValidationException("page and size must be greater than 0");
+
         PageRequest pageable = PageRequest.of(page, size);
-         Page<Member> participants =  competitionService.getParticipantsOfCompetition(competitionId , pageable);
+         Page<Member> participants =  competitionService.searchMembersOfCompetition(competitionId , value, pageable);
+
+        if(page > participants.getTotalPages()){
+            throw new ValidationException("The page is out of its range");
+        }
+
+        return new ResponseEntity<>(participants , HttpStatus.OK);
+    }
+
+    @GetMapping("/{competitionId}/participants/")
+    public ResponseEntity<?> searchMembersOfCompetitionDefault(@PathVariable Long competitionId  , @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+
+        // check if page or size is null or negative
+        if (page < 0 || size < 0) throw new ValidationException("page and size must be greater than 0");
+
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Member> participants =  competitionService.searchMembersOfCompetition(competitionId , "", pageable);
+
+        if(page > participants.getTotalPages()){
+            throw new ValidationException("The page is out of its range");
+        }
+
         return new ResponseEntity<>(participants , HttpStatus.OK);
     }
 

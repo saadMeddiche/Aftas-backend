@@ -7,6 +7,7 @@ import com.clubs.aftas.entities.Member;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.domain.Page;
@@ -28,8 +29,16 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long> 
 
     // Get The participants of a competition
 
-    @Query("SELECT r.member FROM Ranking r WHERE r.competition.id = :competitionId")
-    public Page<Member> getMembersOfCompetition(Long competitionId, Pageable pageable);
+
+    @Query("SELECT DISTINCT r.member FROM Ranking r " +
+            "WHERE r.competition.id = :competitionId " +
+            "AND (:searchValue IS NULL OR " +
+            "LOWER(r.member.name) LIKE LOWER(CONCAT('%', :searchValue, '%')) OR " +
+            "LOWER(r.member.familyName) LIKE LOWER(CONCAT('%', :searchValue, '%')) OR " +
+            "LOWER(r.member.nationality) LIKE LOWER(CONCAT('%', :searchValue, '%')) OR " +
+            "LOWER(r.member.identityNumber) LIKE LOWER(CONCAT('%', :searchValue, '%')) OR " +
+            "LOWER(r.member.identityDocument) LIKE LOWER(CONCAT('%', :searchValue, '%')))")
+    public Page<Member> findMembersByCompetitionIdAndSearchValue(Long competitionId, String searchValue, Pageable pageable);
 
 
 }

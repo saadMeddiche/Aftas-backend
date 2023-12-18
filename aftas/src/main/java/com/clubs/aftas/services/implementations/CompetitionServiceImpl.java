@@ -55,8 +55,8 @@ public class CompetitionServiceImpl extends BaseService<Competition, Long> imple
     }
 
     @Override
-    public Page<Member> getParticipantsOfCompetition(Long competitionId, Pageable pageable) {
-       return Optional.of( competitionRepository.getMembersOfCompetition(competitionId , pageable)).orElseThrow(() -> new EmptyException("No participants in this competition"));
+    public Page<Member> searchMembersOfCompetition(Long competitionId, String value , Pageable pageable) {
+       return Optional.of( competitionRepository.findMembersByCompetitionIdAndSearchValue(competitionId, value , pageable)).orElseThrow(() -> new EmptyException("No participants in this competition"));
     }
 
     @Override

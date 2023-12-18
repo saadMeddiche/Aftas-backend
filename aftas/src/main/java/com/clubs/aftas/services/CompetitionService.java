@@ -22,7 +22,7 @@ public interface CompetitionService {
 
     public Competition getCompetitionById(Long id);
 
-    public Page<Member> getParticipantsOfCompetition(Long competitionId , Pageable pageable);
+    public Page<Member> searchMembersOfCompetition(Long competitionId , String value , Pageable pageable);
 
     public Competition createCompetition(CompetitionRequest competitionRequest);
 
