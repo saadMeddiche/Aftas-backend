@@ -74,7 +74,7 @@ public class CompetitionController {
     }
 
     @GetMapping("/results/{competitionId}")
-    public ResponseEntity<?> getResults(@PathVariable Long competitionId) {
+    public ResponseEntity<?> calculateResults(@PathVariable Long competitionId) {
         competitionService.results(competitionId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

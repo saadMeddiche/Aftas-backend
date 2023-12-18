@@ -1,5 +1,6 @@
 package com.clubs.aftas.services.businessLogic;
 
+import com.clubs.aftas.dtos.competition.Top;
 import com.clubs.aftas.entities.Competition;
 import com.clubs.aftas.entities.Fish;
 import com.clubs.aftas.entities.Ranking;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -80,6 +83,8 @@ public class BLCompetitionService {
 
 
 
+
+    // Long : Member Id | Integer : Points
     public Map<Long, Integer> calculateResultOfParticipation(Competition competition) {
         return competition.getHuntings().stream()
                 .collect(Collectors.groupingBy(
@@ -106,5 +111,38 @@ public class BLCompetitionService {
                 .collect(Collectors.toList());
 
         rankingRepository.saveAll(updatedRankings);
+    }
+
+    public Map<Integer, List<Ranking>> groupRankingsByScore(List<Ranking> rankingList) {
+        return rankingList.stream()
+                .collect(Collectors.groupingBy(Ranking::getScore));
+    }
+
+    public List<Integer> getTopThreeScores(List<Ranking> rankingList) {
+        return rankingList.stream()
+                .map(Ranking::getScore)
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .limit(3)
+                .collect(Collectors.toList());
+    }
+
+    public Map<Integer, List<Top>> createTopThreeMap(Map<Integer, List<Ranking>> rankingsByScore, List<Integer> topThreeScores) {
+        Map<Integer, List<Top>> topThree = new HashMap<>();
+        int rank = 1;
+
+        for (Integer score : topThreeScores) {
+            List<Ranking> rankingsWithScore = rankingsByScore.get(score);
+            List<Top> topList = createTopList(rankingsWithScore);
+            topThree.put(rank++, topList);
+        }
+
+        return topThree;
+    }
+
+    public List<Top> createTopList(List<Ranking> rankingsWithScore) {
+        return rankingsWithScore.stream()
+                .map(ranking -> new Top(ranking.getMember(), ranking.getScore()))
+                .collect(Collectors.toList());
     }
 }

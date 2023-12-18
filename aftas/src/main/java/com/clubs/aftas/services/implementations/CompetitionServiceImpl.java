@@ -129,6 +129,20 @@ public class CompetitionServiceImpl extends BaseService<Competition, Long> imple
 
     }
 
+//    @Override
+//    public Map<Integer, List<Top>> getTopThree(Long competitionId) {
+//
+//        Competition competition = getCompetitionById(competitionId);
+//
+//        List<Ranking> rankingList = competition.getRankings();
+//
+//        Map<Integer, List<Ranking>> rankingsByScore = blCompetitionService.groupRankingsByScore(rankingList);
+//
+//        List<Integer> topThreeScores = blCompetitionService.getTopThreeScores(rankingList);
+//
+//        return blCompetitionService.createTopThreeMap(rankingsByScore, topThreeScores);
+//    }
+
     @Override
     public List<Competition> searchCompetitionsByCriteria(List<FilterDTO> filters) {
         return Optional.of(competitionRepository.findAll(searchByCriteria(filters)))
