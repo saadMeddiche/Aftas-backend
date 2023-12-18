@@ -29,5 +29,5 @@ public interface FishService {
 
     public List<Fish> searchFishsByCriteria(List<FilterDTO> filters);
 
-    public List<Fish> searchFishs(String value);
+    public Page<Fish> searchFishs(String value , Pageable pageable);
 }

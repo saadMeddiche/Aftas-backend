@@ -5,6 +5,7 @@ import com.clubs.aftas.dtos.fish.requests.FishRequest;
 import com.clubs.aftas.entities.Fish;
 import com.clubs.aftas.entities.Member;
 import com.clubs.aftas.entities.Ranking;
+import com.clubs.aftas.handlingExceptions.costumExceptions.ValidationException;
 import com.clubs.aftas.services.FishService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -58,8 +59,27 @@ public class FishController {
     }
 
     @GetMapping("/search/{value}")
-    public ResponseEntity<?> searchFishs(@PathVariable String value) {
-        List<Fish> fishs = fishService.searchFishs(value);
-        return new ResponseEntity<>(fishs, HttpStatus.OK);
+    public ResponseEntity<?> searchFishes(@PathVariable String value ,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Fish> fishes = fishService.searchFishs(value , pageable);
+        return new ResponseEntity<>(fishes, HttpStatus.OK);
+    }
+
+    @GetMapping(value =  {"/search" , "/search/"})
+    public ResponseEntity<?> searchFishesDefault( @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+
+        // check if page or size is null or negative
+        if (page < 0 || size < 0) throw new ValidationException("page and size must be greater than 0");
+
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Fish> fishes = fishService.searchFishs("" , pageable);
+
+        int tototalPages = fishes.getTotalPages();
+
+        if(page >= tototalPages){
+            throw new ValidationException("The page is out of its range");
+        }
+        return new ResponseEntity<>(fishes, HttpStatus.OK);
     }
 }
+

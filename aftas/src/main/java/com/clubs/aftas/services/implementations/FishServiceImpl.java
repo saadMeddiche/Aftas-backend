@@ -114,8 +114,8 @@ public class FishServiceImpl extends BaseService<Fish, Long> implements FishServ
 
 
     @Override
-    public List<Fish> searchFishs(String value) {
-        return Optional.of(fishRepository.findAll(search(value)))
+    public Page<Fish> searchFishs(String value , Pageable pageable) {
+        return Optional.of(fishRepository.findAll(search(value) , pageable))
                 .orElseThrow(() -> new EmptyException("No fish has been found"));
     }
 }
