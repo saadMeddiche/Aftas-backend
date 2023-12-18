@@ -48,6 +48,7 @@ public class CompetitionController {
         if (page < 0 || size < 0) throw new ValidationException("page and size must be greater than 0");
 
         PageRequest pageable = PageRequest.of(page, size);
+
          Page<Member> participants =  competitionService.searchMembersOfCompetition(competitionId , value, pageable);
 
         if(page > participants.getTotalPages()){
@@ -108,6 +109,29 @@ public class CompetitionController {
     public ResponseEntity<?> searchCompetitions(@PathVariable String value ,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         PageRequest pageable = PageRequest.of(page, size);
         Page<Competition> competitions = competitionService.searchCompetitions(value , pageable);
+        return new ResponseEntity<>(competitions, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/after/search/{value}")
+    public ResponseEntity<?> searchPendingCompetitions(@PathVariable String value ,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+
+        // check if page or size is null or negative
+        if (page < 0 || size < 0) throw new ValidationException("page and size must be greater than 0");
+
+        Page<Competition> competitions = competitionService.searchPendingCompetitions(value , pageable);
+        return new ResponseEntity<>(competitions, HttpStatus.OK);
+    }
+
+    @GetMapping("/before/search/{value}")
+    public ResponseEntity<?> searchClosedCompetitions(@PathVariable String value ,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+
+        // check if page or size is null or negative
+        if (page < 0 || size < 0) throw new ValidationException("page and size must be greater than 0");
+
+        Page<Competition> competitions = competitionService.searchClosedCompetitions(value , pageable);
         return new ResponseEntity<>(competitions, HttpStatus.OK);
     }
 

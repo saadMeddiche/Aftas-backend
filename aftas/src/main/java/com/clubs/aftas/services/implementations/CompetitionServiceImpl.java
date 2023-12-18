@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -154,6 +155,20 @@ public class CompetitionServiceImpl extends BaseService<Competition, Long> imple
         return Optional.of(competitionRepository.findAll(search(value) , pageable))
                 .orElseThrow(() -> new EmptyException("No competition has been found"));
     }
+
+    @Override
+    public Page<Competition> searchClosedCompetitions(String value , Pageable pageable) {
+        return Optional.of(competitionRepository.findByDateBefore(LocalDate.now(), value , pageable))
+                .orElseThrow(() -> new EmptyException("No competition has been found"));
+    }
+
+    @Override
+    public Page<Competition> searchPendingCompetitions(String value , Pageable pageable) {
+        return Optional.of(competitionRepository.findByDateAfter(LocalDate.now(),value , pageable))
+                .orElseThrow(() -> new EmptyException("No competition has been found"));
+    }
+
+
 
     private Competition buildCompetition( CompetitionRequest competitionRequest , Long competitionId) {
 

@@ -41,4 +41,10 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long> 
     public Page<Member> findMembersByCompetitionIdAndSearchValue(Long competitionId, String searchValue, Pageable pageable);
 
 
+    Page<Competition> findByDateBefore(LocalDate currentDate, String searchValue, Pageable pageable);
+
+    Page<Competition> findByDateAfter(LocalDate currentDate, String searchValue, Pageable pageable);
+
+
+
 }

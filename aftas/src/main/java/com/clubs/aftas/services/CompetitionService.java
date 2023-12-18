@@ -38,5 +38,10 @@ public interface CompetitionService {
 
     public Page<Competition> searchCompetitions(String value , Pageable pageable);
 
+    public Page<Competition> searchPendingCompetitions (String value ,Pageable pageable);
+    public Page<Competition> searchClosedCompetitions (String value ,Pageable pageable);
+
+
+
 
 }
